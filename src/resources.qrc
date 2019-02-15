@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>resources/app_icon.png</file>
-        <file>resources/todo.txt</file>
         <file>resources/block_brown.jpg</file>
         <file>resources/block_white.jpg</file>
         <file>resources/jump.jpg</file>

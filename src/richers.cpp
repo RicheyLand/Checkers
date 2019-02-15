@@ -12,7 +12,7 @@ ClickableLabel::~ClickableLabel()
 
 void ClickableLabel::mousePressEvent(QMouseEvent * event)
 {
-    emit clicked(line, field);                          //  emit signal if mouse press event detected on clickable label
+    emit clicked(line, field);                          //  emit signal if mouse press event has been detected on clickable label
     event->ignore();
 }
 
@@ -24,7 +24,7 @@ richers::richers(QWidget * parent) : QWidget(parent), ui(new Ui::richers)
         high_resolution = true;                         //  it is possible to start application in high resolution(930 x 930)
     else
     {
-        high_resolution = false;                        //  application can be started only in standard resolution(680 x 680)
+        high_resolution = false;                        //  application can be only started in standard resolution(680 x 680)
         setMinimumSize(680, 680);
         setMaximumSize(680, 680);
         ui->about_image->setMinimumSize(680, 680);
@@ -40,11 +40,11 @@ richers::richers(QWidget * parent) : QWidget(parent), ui(new Ui::richers)
     init_icons();
     init_menu();
 
-    ui->tabs->tabBar()->hide();                         //  hide tab bar of tab widget
-    ui->tab->setLayout(ui->tab1_g_layout);              //  set layout for first tab of tab widget
-    ui->tab_2->setLayout(ui->tab2_g_layout);            //  set layout for second tab of tab widget
-    ui->tab_3->setLayout(ui->tab3_v_layout);            //  set layout for third tab of tab widget
-    ui->tab_4->setLayout(ui->tab4_v_layout);            //  set layout for fourth tab of tab widget
+    ui->tabs->tabBar()->hide();                         //  hide tab bar of the tab widget
+    ui->tab->setLayout(ui->tab1_g_layout);              //  set layout for the first tab of tab widget
+    ui->tab_2->setLayout(ui->tab2_g_layout);            //  set layout for the second tab of tab widget
+    ui->tab_3->setLayout(ui->tab3_v_layout);            //  set layout for the third tab of tab widget
+    ui->tab_4->setLayout(ui->tab4_v_layout);            //  set layout for the fourth tab of tab widget
     setLayout(ui->main_v_layout);                       //  set main layout of window
 }
 
@@ -83,7 +83,7 @@ void richers::create_colors()
 
 void richers::init_table()
 {
-    block_brown = new QPixmap(":/resources/block_brown.jpg");   //  allocate memory for all images and set path to source images
+    block_brown = new QPixmap(":/resources/block_brown.jpg");   //  allocate memory for all images and set paths to source images
     block_white = new QPixmap(":/resources/block_white.jpg");
     stone_black = new QPixmap(":/resources/stone_brown.jpg");
     stone_white = new QPixmap(":/resources/stone_white.jpg");
@@ -123,8 +123,8 @@ void richers::init_arrays()
 {
     selected = false;                                   //  no cell is selected
     white_playing = true;                               //  first player is on turn at start of game
-    only_jumping = 0;                                   //  insane to jump at start of game
-    turn_started = false;                               //  multiple jump is not possible at start of game
+    only_jumping = 0;                                   //  insane to jump at the beginning of game
+    turn_started = false;                               //  multiple jump is not possible at the beginning of game
 
     for (int i = 0; i < 8; i++)
     {
@@ -159,7 +159,7 @@ void richers::init_arrays()
     blacks[7][6] = true;
 
     game_over = false;                                  //  game is not over by default
-    switch_to_game();                                   //  move to game tab in tab widget
+    switch_to_game();                                   //  move to game tab in the tab widget
 }
 
 void richers::init_icons()
@@ -180,7 +180,7 @@ void richers::init_icons()
             }
 
             block[i][j].setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);  //  set alignment of image content
-            block[i][j].setMargin(0);                   //  set zero margin for image
+            block[i][j].setMargin(0);                   //  set zero margin of image
             block[i][j].setScaledContents(true);        //  scale image size
 
             if (whites[i][j])                           //  white stone have to be on this cell
@@ -205,9 +205,9 @@ void richers::init_icons()
                 }
             }
 
-            block[i][j].line = i;                       //  load line index into image object attribute
-            block[i][j].field = j;                      //  load field index into image object attribute
-            ui->tab1_g_layout->addWidget(&(block[i][j]), i, j);     //  add image into grid layout
+            block[i][j].line = i;                       //  load line index into the image object attribute
+            block[i][j].field = j;                      //  load field index into the image object attribute
+            ui->tab1_g_layout->addWidget(&(block[i][j]), i, j);     //  add image into the grid layout
 
             QObject::connect(&(block[i][j]), SIGNAL(clicked(int,int)), this, SLOT(click_reaction(int, int)));   //  handle image click
         }
@@ -216,12 +216,12 @@ void richers::init_icons()
 
 void richers::init_menu()
 {
-    new_game_image = new QPixmap(":/resources/new.jpg");    //  allocate memory for menu buttons and set path to source images
+    new_game_image = new QPixmap(":/resources/new.jpg");    //  allocate memory for menu buttons and set paths to source images
     help_image = new QPixmap(":/resources/help.jpg");
     info_image = new QPixmap(":/resources/info.jpg");
     exit_image = new QPixmap(":/resources/exit.jpg");
 
-    for (int i = 0; i < 4; i++)                         //  same behaviour for all menu buttons
+    for (int i = 0; i < 4; i++)                         //  same behavior for all menu buttons
     {
         menu_button[i].setMinimumSize(330, 330);        //  set fixed size of button
         menu_button[i].setMaximumSize(330, 330);
@@ -233,12 +233,12 @@ void richers::init_menu()
         QObject::connect(menu_button + i, SIGNAL(clicked(int,int)), this, SLOT(click_reaction(int, int)));   //  handle button click
     }
 
-    menu_button[0].setPixmap(* new_game_image);         //  set image for new game button
-    menu_button[1].setPixmap(* help_image);             //  set image for help button
-    menu_button[2].setPixmap(* info_image);             //  set image for info button
-    menu_button[3].setPixmap(* exit_image);             //  set image for exit button
+    menu_button[0].setPixmap(* new_game_image);         //  set image of the new game button
+    menu_button[1].setPixmap(* help_image);             //  set image of the help button
+    menu_button[2].setPixmap(* info_image);             //  set image of the info button
+    menu_button[3].setPixmap(* exit_image);             //  set image of the exit button
 
-    ui->tab2_g_layout->addWidget(menu_button, 0, 0);    //  add menu buttons into grid layout
+    ui->tab2_g_layout->addWidget(menu_button, 0, 0);    //  add menu buttons into the grid layout
     ui->tab2_g_layout->addWidget(menu_button + 1, 0, 1);
     ui->tab2_g_layout->addWidget(menu_button + 2, 1, 0);
     ui->tab2_g_layout->addWidget(menu_button + 3, 1, 1);
@@ -256,9 +256,9 @@ void richers::reset_board_color(int & x, int & y)
     else if (blacks[y][x])                              //  black stone have to be on this cell
     {
         if (queens[y][x])                               //  queen
-            block[y][x].setPixmap(* queen_black);       //  load black queen image on this cell
+            block[y][x].setPixmap(* queen_black);       //  load black queen image onto this cell
         else                                            //  stone
-            block[y][x].setPixmap(* stone_black);       //  load black stone image on this cell
+            block[y][x].setPixmap(* stone_black);       //  load black stone image onto this cell
     }
     else                                                //  this cell have to be empty
         block[y][x].setPixmap(* block_brown);           //  insert empty brown block
@@ -274,7 +274,7 @@ void richers::switch_to_game()
 void richers::switch_to_menu()
 {
     workspace = menu;
-    ui->tabs->setCurrentIndex(menu);                    //  move to menu tab in tab widget
+    ui->tabs->setCurrentIndex(menu);                    //  move to menu tab in the tab widget
     setPalette(white_palette);                          //  set background color to white
 }
 
@@ -532,7 +532,7 @@ void richers::jump_predicate()
 
 bool richers::is_game_over()
 {
-    if (only_jumping == 0)                              //  jump predicate falsed
+    if (only_jumping == 0)                              //  jump predicate is not active
     {
         if (white_playing)                              //  check game over of white player
         {
@@ -643,9 +643,9 @@ void richers::click_reaction(int y, int x)
 
     if (white_playing)                                  //  white player is on turn
     {
-        if (whites[y][x] && turn_started == false)      //  it was clicked on white stone and there is no running multiple jump
+        if (whites[y][x] && turn_started == false)      //  it has been clicked on the white stone and there is no running multiple jump
         {
-            if (queens[y][x])                           //  there is white queen on selected cell
+            if (queens[y][x])                           //  there is white queen on the selected cell
             {
                 bool flag = false;
 
@@ -1079,7 +1079,7 @@ void richers::click_reaction(int y, int x)
                     else
                         block[y][x].setPixmap(* stone_white_select);    //  set new cell with white queen as selected
 
-                    if (only_jumping)                   //  jumping is requied when it is possible to jump
+                    if (only_jumping)                   //  jumping is required when it is possible to jump
                     {
                         if (x > 1 && y < 6)             //  jumping left
                         {
@@ -1206,7 +1206,7 @@ void richers::click_reaction(int y, int x)
                                 blacks[select.y][select.x] = false;     //  refresh blacks array
                                 whites[select.y][select.x] = true;  //  disable overjumping of stone by this
 
-                                break;                  //  if stone is queen, then it will be removed after
+                                break;                  //  if stone is queen then it will be removed after
                             }
                         }
                     }
@@ -1428,7 +1428,7 @@ void richers::click_reaction(int y, int x)
                         }
                     }
 
-                    while (stones_to_remove.size())     //  remove all over jumped opponents stones
+                    while (stones_to_remove.size())     //  remove all overjumped opponents stones
                     {
                         int temp_x = stones_to_remove.front().x;    //  save temporary coordinates
                         int temp_y = stones_to_remove.front().y;
@@ -1890,7 +1890,7 @@ void richers::click_reaction(int y, int x)
                     else
                         block[y][x].setPixmap(* stone_black_select);    //  set new cell with black queen as selected
 
-                    if (only_jumping)                   //  jumping is requied when it is possible to jump
+                    if (only_jumping)                   //  jumping is required when it is possible to jump
                     {
                         if (x > 1 && y > 1)             //  jumping left
                         {
@@ -2017,7 +2017,7 @@ void richers::click_reaction(int y, int x)
                                 whites[select.y][select.x] = false;     //  refresh whites array
                                 blacks[select.y][select.x] = true;  //  disable overjumping of stone by this
 
-                                break;                  //  if stone is queen, then it will be removed after
+                                break;                  //  if stone is queen then it will be removed after
                             }
                         }
                     }
@@ -2239,7 +2239,7 @@ void richers::click_reaction(int y, int x)
                         }
                     }
 
-                    while (stones_to_remove.size())     //  remove all over jumped opponents stones
+                    while (stones_to_remove.size())     //  remove all overjumped opponents stones
                     {
                         int temp_x = stones_to_remove.front().x;    //  save temporary coordinates
                         int temp_y = stones_to_remove.front().y;

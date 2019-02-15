@@ -50,14 +50,14 @@ protected:
     void mousePressEvent(QMouseEvent * event);          //  handle mouse press event
 };
 
-class coordinates                                       //  class to save coordinates
+class coordinates                                       //  class which represents matrix coordinates
 {
 public:
     int x;                                              //  domain value
     int y;                                              //  relace value
 };
 
-class richers : public QWidget                          //  class which describes logic of richers
+class richers : public QWidget                          //  class which describes logic of richers game
 {
     Q_OBJECT
 
@@ -68,22 +68,22 @@ public:
 private:
     Ui::richers * ui;
 
-    bool high_resolution;                               //  holds if application is running is high resolution
+    bool high_resolution;                               //  holds if application is running in the high resolution
 
-    bool white_playing;                                 //  recognize which player is on turn
+    bool white_playing;                                 //  holds which player is on turn
     bool whites[8][8];                                  //  locations of white stones
     bool blacks[8][8];                                  //  locations of black stones
     bool queens[8][8];                                  //  locations of queens
     bool selected;                                      //  flag if red selection cell is active
     int only_jumping;                                   //  0 = move(any); 1 = stone jump; 2 = queen jump
-    bool turn_started;                                  //  prevents selecting another jump stone when multiple jump started
+    bool turn_started;                                  //  prevents selecting another jump stone when multiple jump has been started
 
     bool game_over;                                     //  holds if game is over
     int workspace;                                      //  holds actual tab widget index
 
     coordinates select;                                 //  red selection cell coordinates
     deque<coordinates> move_hint;                       //  list of green move hint cells coordinates
-    deque<coordinates> stones_to_remove;                //  list of stones that will be removed after jump
+    deque<coordinates> stones_to_remove;                //  list of stones that are going to be removed after jump
 
     QPalette white_palette;                             //  white background palette
     QPalette black_palette;                             //  black background palette
@@ -106,26 +106,26 @@ private:
     QPixmap * info_image;                               //  info button image
     QPixmap * exit_image;                               //  exit button image
 
-    ClickableLabel block[8][8];                         //  array of clickable labels to represent gaming board with stones
+    ClickableLabel block[8][8];                         //  array of clickable labels which represent gaming board with stones
     ClickableLabel menu_button[4];                      //  clickable labels represent menu buttons
 
-    void keyPressEvent(QKeyEvent *);                    //	reaction for keyboard press
+    void keyPressEvent(QKeyEvent *);                    //	reaction to the keyboard press
 
     void create_colors();                               //  create all colors and palettes
     void init_table();                                  //  allocate memory for table widget items
     void create_icons();                                //  allocate memory for icons
     void init_arrays();                                 //  initialize stones locations
-    void init_icons();                                  //  load icons on desired table cells
+    void init_icons();                                  //  load icons on the desired table cells
     void init_menu();                                   //  initialize menu buttons
-    void reset_board_color(int &, int &);               //  reset brown color on desired cell
+    void reset_board_color(int &, int &);               //  reset brown color on the desired cell
 
-    void switch_to_game();                              //  move to game tab in tab widget
-    void switch_to_menu();                              //  move to menu tab in tab widget
+    void switch_to_game();                              //  move to game tab in the tab widget
+    void switch_to_menu();                              //  move to menu tab in the tab widget
 
-    void jump_predicate();                              //  recognize if is possible to jump with some stones
-    bool is_game_over();                                //  check if some player wins the match
+    void jump_predicate();                              //  recognize if is it possible to jump with some stones
+    bool is_game_over();                                //  check if some player is winner
 private slots:
-    void click_reaction(int, int);                      //  reaction for mouse click on desired cell
+    void click_reaction(int, int);                      //  reaction to the mouse click on desired cell
     void new_game_button_click();                       //  handle new game button press
     void help_button_click();                           //  handle help button press
     void about_button_click();                          //  handle about button press
