@@ -1,0 +1,3 @@
+set application resolution(SD or HD) by detecting actual screen resolution(resize unavailable, only autodetectd and then fixed dialog size)
+help screen will be only one image with rendered text(cutted from image) and showed as help message
+repair multijump bug
