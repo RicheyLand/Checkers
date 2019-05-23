@@ -1,6 +1,7 @@
 # Richers
 Richers is a cross-platform checkers game.<br />
-Application has been written in Qt Framework using C++ language.
+Application has been written in Qt Framework using C++ language.<br />
+Content of project has been designed for Qt 5.
 
 ![Screenshot](docs/images/screenshot.png)
 
