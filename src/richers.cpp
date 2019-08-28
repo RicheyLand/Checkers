@@ -1138,9 +1138,9 @@ void richers::click_reaction(int y, int x)
         }
         else if (selected)                              //  click on non-white stone cell when selected
         {
-            int len = move_hint.size();
+            unsigned long len = move_hint.size();
 
-            for (int i = 0; i < len; i++)
+            for (unsigned long i = 0; i < len; i++)
             {                                           //  cell is in movement hints
                 if (move_hint[i].x == x && move_hint[i].y == y)
                 {
@@ -1235,7 +1235,7 @@ void richers::click_reaction(int y, int x)
                             }
                         }
 
-                        int len = move_hint.size();
+                        unsigned long len = move_hint.size();
 
                         if (len)                        //  multiple jump is possible
                         {
@@ -1247,7 +1247,7 @@ void richers::click_reaction(int y, int x)
                             else
                                 block[y][x].setPixmap(* stone_white_select);    //  set new cell with white queen as selected
 
-                            for (int i = 0; i < len; i++)   //  draw all red move hint cells
+                            for (unsigned long i = 0; i < len; i++)   //  draw all red move hint cells
                                 block[move_hint[i].y][move_hint[i].x].setPixmap(* jump_circle);
 
                             return;                     //  white player is still playing
@@ -1409,7 +1409,7 @@ void richers::click_reaction(int y, int x)
                         x = old_x;
                         y = old_y;
 
-                        int len = move_hint.size();
+                        unsigned long len = move_hint.size();
 
                         if (len)                        //  multiple jump is possible
                         {
@@ -1421,7 +1421,7 @@ void richers::click_reaction(int y, int x)
                             else
                                 block[y][x].setPixmap(* stone_white_select);    //  set new cell with white queen as selected
 
-                            for (int i = 0; i < len; i++)   //  draw all red move hint cells
+                            for (unsigned long i = 0; i < len; i++)   //  draw all red move hint cells
                                 block[move_hint[i].y][move_hint[i].x].setPixmap(* jump_circle);
 
                             return;                     //  white player is still playing
@@ -1949,9 +1949,9 @@ void richers::click_reaction(int y, int x)
         }
         else if (selected)                              //  click on non-black stone cell when selected
         {
-            int len = move_hint.size();
+            unsigned long len = move_hint.size();
 
-            for (int i = 0; i < len; i++)
+            for (unsigned long i = 0; i < len; i++)
             {                                           //  cell is in movement hints
                 if (move_hint[i].x == x && move_hint[i].y == y)
                 {
@@ -2046,7 +2046,7 @@ void richers::click_reaction(int y, int x)
                             }
                         }
 
-                        int len = move_hint.size();
+                        unsigned long len = move_hint.size();
 
                         if (len)                        //  multiple jump is possible
                         {
@@ -2058,7 +2058,7 @@ void richers::click_reaction(int y, int x)
                             else
                                 block[y][x].setPixmap(* stone_black_select);    //  set new cell with black queen as selected
 
-                            for (int i = 0; i < len; i++)   //  draw all red move hint cells
+                            for (unsigned long i = 0; i < len; i++)   //  draw all red move hint cells
                                 block[move_hint[i].y][move_hint[i].x].setPixmap(* jump_circle);
 
                             return;                     //  black player is still playing
@@ -2220,7 +2220,7 @@ void richers::click_reaction(int y, int x)
                         x = old_x;
                         y = old_y;
 
-                        int len = move_hint.size();
+                        unsigned long len = move_hint.size();
 
                         if (len)                        //  multiple jump is possible
                         {
@@ -2232,7 +2232,7 @@ void richers::click_reaction(int y, int x)
                             else
                                 block[y][x].setPixmap(* stone_black_select);    //  set new cell with black queen as selected
 
-                            for (int i = 0; i < len; i++)   //  draw all red move hint cells
+                            for (unsigned long i = 0; i < len; i++)   //  draw all red move hint cells
                                 block[move_hint[i].y][move_hint[i].x].setPixmap(* jump_circle);
 
                             return;                     //  black player is still playing
