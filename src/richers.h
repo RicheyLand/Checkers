@@ -1,22 +1,7 @@
 #ifndef RICHERS_H
 #define RICHERS_H
 
-#include <QApplication>
-#include <QObject>
-#include <QWidget>
-#include <QDialog>
-#include <QDesktopWidget>
-#include <QLabel>
-#include <QPalette>
-#include <QIcon>
-#include <QColor>
-#include <QPixmap>
-#include <QString>
-#include <QHBoxLayout>
-#include <QVBoxLayout>
-#include <QGridLayout>
-#include <QKeyEvent>
-#include <QMouseEvent>
+#include <QtWidgets>
 #include <deque>
 using namespace std;
 
@@ -38,7 +23,7 @@ class ClickableLabel : public QLabel                    //  class which describe
     Q_OBJECT
 
 public:
-    explicit ClickableLabel(const QString & text = "", QWidget * parent = 0);
+    explicit ClickableLabel(const QString & text = "", QWidget * parent = nullptr);
     int line;                                           //  line index
     int field;                                          //  field index
     ~ClickableLabel();
@@ -62,7 +47,7 @@ class richers : public QWidget                          //  class which describe
     Q_OBJECT
 
 public:
-    explicit richers(QWidget * parent = 0);
+    explicit richers(QWidget * parent = nullptr);
     ~richers();
 
 private:
