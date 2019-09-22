@@ -1,5 +1,5 @@
-# Richers
-Richers is a cross-platform checkers game.<br />
+# Checkers
+Cross-platform checkers game.<br />
 Application has been written in Qt Framework using C++ language.<br />
 Content of project has been designed for Qt 5.
 
@@ -7,7 +7,7 @@ Content of project has been designed for Qt 5.
 
 ## Build instructions
 
-* Clone the Richers game repository.
+* Clone the Checkers game repository.
 * Move into the `src` directory and run `qmake` utility to generate Makefile.
 * Build the executable using `make` automation tool.
-* Run Richers.
+* Run Checkers.
