@@ -1,10 +1,10 @@
-#include "richers.h"
+#include "checkers.h"
 
-int main(int argc, char *argv[])
+int main (int argc, char ** argv)
 {
-    QApplication a(argc, argv);
-    richers * w = new richers;
-    w->show();
+	auto app = Gtk::Application::create(argc, argv, "org.gtkmm.example");
 
-    return a.exec();
+	Checkers checkers;
+
+	return app->run(checkers);
 }
