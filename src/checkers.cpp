@@ -1,10 +1,10 @@
 #include "checkers.h"
 
-Checkers::Checkers()
+Checkers::Checkers() : width(800), height(800)
 {
 	set_title("Checkers");
-	set_default_size(800, 800);
-	set_border_width(4);
+	set_default_size(width, height);
+	set_border_width(0);
 	override_background_color(Gdk::RGBA("black"), Gtk::STATE_FLAG_NORMAL);
 
 	add(myBox);
@@ -12,6 +12,9 @@ Checkers::Checkers()
 	// myButton.set_label("Click");
 	// myButton.signal_clicked().connect(sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Checkers::onButtonClicked), "Button 1"));
 	// myGrid.add(myButton);
+
+	add_events(Gdk::STRUCTURE_MASK);
+	signal_configure_event().connect(sigc::mem_fun(*this, &Checkers::onConfigureChanged), false);
 
 	for (int i = 0; i < blockCount; i++)
 	{
@@ -72,4 +75,20 @@ bool Checkers::onEventboxButtonPress(GdkEventButton * /*button_event*/, Glib::us
 
 	// hide();
 	return true;
+}
+
+bool Checkers::onConfigureChanged(GdkEventConfigure * event)
+{
+	int newWidth = event->width;
+	int newHeight = event->height;
+
+	// cout << "Configure changed" << " " << event->width << endl;
+
+	if (newWidth != width)
+		width = newWidth;
+
+	if (newHeight != height)
+		height = newHeight;
+
+	return false;
 }

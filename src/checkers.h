@@ -11,12 +11,15 @@ public:
 	Checkers();
 	virtual ~Checkers();
 
-protected:
-
+private:
 	void onButtonClicked(Glib::ustring);
 	bool onEventboxButtonPress(GdkEventButton *, Glib::ustring);
+	bool onConfigureChanged(GdkEventConfigure *);
 
 	static const int blockCount = 8;
+
+	int width;
+	int height;
 	
 	Gtk::Box myBox;
 	Gtk::Grid myGrid;
