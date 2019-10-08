@@ -39,7 +39,6 @@ Checkers::Checkers() : width(800), height(800)
 			}
 
 			Glib::RefPtr<Gdk::Pixbuf> image = Gdk::Pixbuf::create_from_file(path, 100, 100, true);
-			// Glib::RefPtr<Gdk::Pixbuf> image = Gdk::Pixbuf::create_from_file(path);
 			images[i][j].set(image);
 
 			// images[i][j].set_hexpand(true);
@@ -49,7 +48,7 @@ Checkers::Checkers() : width(800), height(800)
 			eventBoxes[i][j].add(images[i][j]);
 			eventBoxes[i][j].set_events(Gdk::BUTTON_PRESS_MASK);
 			eventBoxes[i][j].signal_button_press_event().connect(sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Checkers::onEventboxButtonPress), message));
-			eventBoxes[i][j].set_tooltip_text("Click to exit");
+			// eventBoxes[i][j].set_tooltip_text("Click to exit");
 
 			myGrid.attach(eventBoxes[i][j], i, j, 1, 1);
 		}
@@ -114,8 +113,6 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 		// resize(width, height);
 	}
 
-	resize(width, height);
-
 	// if (height & 1)
 	// 	height--;
 	
@@ -146,6 +143,8 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 			images[i][j].set(image);
 		}
 	}
+
+	resize(width, height);
 
 	return false;
 }
