@@ -54,9 +54,9 @@ Checkers::Checkers() : width(800), height(800)
 		}
 	}
 
-	winec.add(myGrid);
+	scrolledWindow.add(myGrid);
 
-	myBox.pack_start(winec);
+	myBox.pack_start(scrolledWindow);
 
 	show_all_children();
 }
@@ -103,20 +103,12 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 		return false;
 
 	if (width < height)
-	{
 		width = height;
-		// resize(width, height);
-	}
 	else if (width > height)
-	{
 		height = width;
-		// resize(width, height);
-	}
-
-	// if (height & 1)
-	// 	height--;
 	
 	int chunk = height / 8;
+	int trail = height % 8;
 
 	for (int i = 0; i < blockCount; i++)
 	{
@@ -143,6 +135,9 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 			images[i][j].set(image);
 		}
 	}
+
+	width -= trail;
+	height -= trail;
 
 	resize(width, height);
 

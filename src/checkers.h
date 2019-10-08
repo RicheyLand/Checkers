@@ -21,7 +21,7 @@ private:
 	int width;
 	int height;
 	
-	Gtk::ScrolledWindow winec;
+	Gtk::ScrolledWindow scrolledWindow;
 	Gtk::Box myBox;
 	Gtk::Grid myGrid;
 	Gtk::Button myButton;
