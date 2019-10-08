@@ -28,6 +28,9 @@ private:
 
 	Gtk::Image images[blockCount][blockCount];
 	Gtk::EventBox eventBoxes[blockCount][blockCount];
+
+	Glib::RefPtr<Gdk::Pixbuf> brownImage;
+	Glib::RefPtr<Gdk::Pixbuf> whiteImage;
 };
 
 #endif

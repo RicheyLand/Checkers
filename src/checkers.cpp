@@ -16,30 +16,29 @@ Checkers::Checkers() : width(800), height(800)
 	add_events(Gdk::STRUCTURE_MASK);
 	signal_configure_event().connect(sigc::mem_fun(*this, &Checkers::onConfigureChanged), false);
 
+	brownImage = Gdk::Pixbuf::create_from_file("./resources/block_brown.jpg", 100, 100, true);
+	whiteImage = Gdk::Pixbuf::create_from_file("./resources/block_white.jpg", 100, 100, true);
+
 	for (int i = 0; i < blockCount; i++)
 	{
 		for (int j = 0; j < blockCount; j++)
 		{
 			string message = to_string(i) + to_string(j);
-			string path = "";
 
 			if (i & 1)
 			{
 				if (j & 1)
-					path = "./resources/block_brown.jpg";
+					images[i][j].set(brownImage);
 				else
-					path = "./resources/block_white.jpg";
+					images[i][j].set(whiteImage);
 			}
 			else
 			{
 				if (j & 1)
-					path = "./resources/block_white.jpg";
+					images[i][j].set(whiteImage);
 				else
-					path = "./resources/block_brown.jpg";
+					images[i][j].set(brownImage);
 			}
-
-			Glib::RefPtr<Gdk::Pixbuf> image = Gdk::Pixbuf::create_from_file(path, 100, 100, true);
-			images[i][j].set(image);
 
 			// images[i][j].set_hexpand(true);
 			// images[i][j].set_vexpand(true);
@@ -110,29 +109,27 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 	int chunk = height / 8;
 	int trail = height % 8;
 
+	brownImage = Gdk::Pixbuf::create_from_file("./resources/block_brown.jpg", chunk, chunk, true);
+	whiteImage = Gdk::Pixbuf::create_from_file("./resources/block_white.jpg", chunk, chunk, true);
+
 	for (int i = 0; i < blockCount; i++)
 	{
 		for (int j = 0; j < blockCount; j++)
 		{
-			string path = "";
-
 			if (i & 1)
 			{
 				if (j & 1)
-					path = "./resources/block_brown.jpg";
+					images[i][j].set(brownImage);
 				else
-					path = "./resources/block_white.jpg";
+					images[i][j].set(whiteImage);
 			}
 			else
 			{
 				if (j & 1)
-					path = "./resources/block_white.jpg";
+					images[i][j].set(whiteImage);
 				else
-					path = "./resources/block_brown.jpg";
+					images[i][j].set(brownImage);
 			}
-
-			Glib::RefPtr<Gdk::Pixbuf> image = Gdk::Pixbuf::create_from_file(path, chunk, chunk, true);
-			images[i][j].set(image);
 		}
 	}
 
