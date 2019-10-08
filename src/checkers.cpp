@@ -3,29 +3,54 @@
 Checkers::Checkers()
 {
 	set_title("Checkers");
-	set_default_size(640, 480);
-
-	set_border_width(10);
+	set_default_size(800, 800);
+	set_border_width(3);
+	override_background_color(Gdk::RGBA("black"), Gtk::STATE_FLAG_NORMAL);
 
 	add(myBox);
 
-	myButton.set_label("Click");
-	myImage.set("./resources/block_brown.jpg");
+	// myButton.set_label("Click");
+	// myButton.signal_clicked().connect(sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Checkers::onButtonClicked), "Button 1"));
+	// myGrid.add(myButton);
 
-	myButton.signal_clicked().connect(sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Checkers::onButtonClicked), "Button 1"));
+	for (int i = 0; i < blockCount; i++)
+	{
+		for (int j = 0; j < blockCount; j++)
+		{
+			string message;
+			message = to_string(i) + to_string(j);
 
-	myBox.pack_start(myButton);
+			if (i & 1)
+			{
+				if (j & 1)
+					images[i][j].set("./resources/block_brown.jpg");
+				else
+					images[i][j].set("./resources/block_white.jpg");
+			}
+			else
+			{
+				if (j & 1)
+					images[i][j].set("./resources/block_white.jpg");
+				else
+					images[i][j].set("./resources/block_brown.jpg");
+			}
 
-	myButton.show();
+			eventBoxes[i][j].add(images[i][j]);
+			eventBoxes[i][j].set_events(Gdk::BUTTON_PRESS_MASK);
+			eventBoxes[i][j].signal_button_press_event().connect(sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Checkers::onEventboxButtonPress), message));
+			eventBoxes[i][j].set_tooltip_text("Click to exit");
 
-	m_EventBox.add(myImage);
+			eventBoxes[i][j].set_hexpand(true);
+			eventBoxes[i][j].set_halign(Gtk::ALIGN_FILL);
+			eventBoxes[i][j].set_vexpand(true);
+			eventBoxes[i][j].set_valign(Gtk::ALIGN_FILL);
 
-	myBox.pack_start(m_EventBox);
 
-	m_EventBox.set_events(Gdk::BUTTON_PRESS_MASK);
-	m_EventBox.signal_button_press_event().connect(sigc::mem_fun(*this, &Checkers::onEventboxButtonPress));
+			myGrid.attach(eventBoxes[i][j], i, j, 1, 1);
+		}
+	}
 
-	m_EventBox.set_tooltip_text("Click to exit");
+	myBox.pack_start(myGrid);
 
 	show_all_children();
 }
@@ -39,8 +64,10 @@ void Checkers::onButtonClicked(Glib::ustring data)
 	std::cout << data << " was pressed" << std::endl;
 }
 
-bool Checkers::onEventboxButtonPress(GdkEventButton*)
+bool Checkers::onEventboxButtonPress(GdkEventButton * /*button_event*/, Glib::ustring data)
 {
-	hide();
+	cout << data << endl;
+
+	// hide();
 	return true;
 }

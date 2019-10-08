@@ -13,14 +13,17 @@ public:
 
 protected:
 
-	void onButtonClicked(Glib::ustring data);
-	bool onEventboxButtonPress(GdkEventButton* button_event);
+	void onButtonClicked(Glib::ustring);
+	bool onEventboxButtonPress(GdkEventButton *, Glib::ustring);
 
-	Gtk::EventBox m_EventBox;
-
+	static const int blockCount = 8;
+	
 	Gtk::Box myBox;
+	Gtk::Grid myGrid;
 	Gtk::Button myButton;
-	Gtk::Image myImage;
+
+	Gtk::Image images[blockCount][blockCount];
+	Gtk::EventBox eventBoxes[blockCount][blockCount];
 };
 
 #endif
