@@ -4,7 +4,7 @@ Checkers::Checkers()
 {
 	set_title("Checkers");
 	set_default_size(800, 800);
-	set_border_width(3);
+	set_border_width(4);
 	override_background_color(Gdk::RGBA("black"), Gtk::STATE_FLAG_NORMAL);
 
 	add(myBox);
@@ -17,34 +17,36 @@ Checkers::Checkers()
 	{
 		for (int j = 0; j < blockCount; j++)
 		{
-			string message;
-			message = to_string(i) + to_string(j);
+			string message = to_string(i) + to_string(j);
+			string path = "";
 
 			if (i & 1)
 			{
 				if (j & 1)
-					images[i][j].set("./resources/block_brown.jpg");
+					path = "./resources/block_brown.jpg";
 				else
-					images[i][j].set("./resources/block_white.jpg");
+					path = "./resources/block_white.jpg";
 			}
 			else
 			{
 				if (j & 1)
-					images[i][j].set("./resources/block_white.jpg");
+					path = "./resources/block_white.jpg";
 				else
-					images[i][j].set("./resources/block_brown.jpg");
+					path = "./resources/block_brown.jpg";
 			}
 
+			// Glib::RefPtr<Gdk::Pixbuf> image = Gdk::Pixbuf::create_from_file(path, 90, 90, true);
+			Glib::RefPtr<Gdk::Pixbuf> image = Gdk::Pixbuf::create_from_file(path);
+			images[i][j].set(image);
+
+			// images[i][j].set_hexpand(true);
+			// images[i][j].set_vexpand(true);
+			// eventBoxes[i][j].set_halign(Gtk::ALIGN_FILL);
+			// eventBoxes[i][j].set_valign(Gtk::ALIGN_FILL);
 			eventBoxes[i][j].add(images[i][j]);
 			eventBoxes[i][j].set_events(Gdk::BUTTON_PRESS_MASK);
 			eventBoxes[i][j].signal_button_press_event().connect(sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Checkers::onEventboxButtonPress), message));
 			eventBoxes[i][j].set_tooltip_text("Click to exit");
-
-			eventBoxes[i][j].set_hexpand(true);
-			eventBoxes[i][j].set_halign(Gtk::ALIGN_FILL);
-			eventBoxes[i][j].set_vexpand(true);
-			eventBoxes[i][j].set_valign(Gtk::ALIGN_FILL);
-
 
 			myGrid.attach(eventBoxes[i][j], i, j, 1, 1);
 		}
