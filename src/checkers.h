@@ -18,6 +18,8 @@ private:
 
 	static const int blockCount = 8;
 
+	int borderWidth;
+	int blockWidth;
 	int width;
 	int height;
 	
@@ -29,8 +31,8 @@ private:
 	Gtk::Image images[blockCount][blockCount];
 	Gtk::EventBox eventBoxes[blockCount][blockCount];
 
-	Glib::RefPtr<Gdk::Pixbuf> brownImage;
-	Glib::RefPtr<Gdk::Pixbuf> whiteImage;
+	Glib::RefPtr<Gdk::Pixbuf> brownImageOriginal;
+	Glib::RefPtr<Gdk::Pixbuf> whiteImageOriginal;
 };
 
 #endif

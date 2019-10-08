@@ -1,10 +1,17 @@
 #include "checkers.h"
 
-Checkers::Checkers() : width(800), height(800)
+Checkers::Checkers()
 {
+	borderWidth = 0;
+	width = 920;
+	height = 920;
+	blockWidth = width / 8;
+	width += borderWidth;
+	height += borderWidth;
+
 	set_title("Checkers");
 	set_default_size(width, height);
-	set_border_width(0);
+	set_border_width(borderWidth);
 	override_background_color(Gdk::RGBA("black"), Gtk::STATE_FLAG_NORMAL);
 
 	add(myBox);
@@ -16,8 +23,8 @@ Checkers::Checkers() : width(800), height(800)
 	add_events(Gdk::STRUCTURE_MASK);
 	signal_configure_event().connect(sigc::mem_fun(*this, &Checkers::onConfigureChanged), false);
 
-	brownImage = Gdk::Pixbuf::create_from_file("./resources/block_brown.jpg", 100, 100, true);
-	whiteImage = Gdk::Pixbuf::create_from_file("./resources/block_white.jpg", 100, 100, true);
+	brownImageOriginal = Gdk::Pixbuf::create_from_file("./resources/block_brown.jpg");
+	whiteImageOriginal = Gdk::Pixbuf::create_from_file("./resources/block_white.jpg");
 
 	for (int i = 0; i < blockCount; i++)
 	{
@@ -28,16 +35,16 @@ Checkers::Checkers() : width(800), height(800)
 			if (i & 1)
 			{
 				if (j & 1)
-					images[i][j].set(brownImage);
+					images[i][j].set(brownImageOriginal);
 				else
-					images[i][j].set(whiteImage);
+					images[i][j].set(whiteImageOriginal);
 			}
 			else
 			{
 				if (j & 1)
-					images[i][j].set(whiteImage);
+					images[i][j].set(whiteImageOriginal);
 				else
-					images[i][j].set(brownImage);
+					images[i][j].set(brownImageOriginal);
 			}
 
 			// images[i][j].set_hexpand(true);
@@ -106,11 +113,11 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 	else if (width > height)
 		height = width;
 	
-	int chunk = height / 8;
-	int trail = height % 8;
+	int chunk = (height - borderWidth) / 8;
+	int trail = (height - borderWidth) % 8;
 
-	brownImage = Gdk::Pixbuf::create_from_file("./resources/block_brown.jpg", chunk, chunk, true);
-	whiteImage = Gdk::Pixbuf::create_from_file("./resources/block_white.jpg", chunk, chunk, true);
+	auto brownImage = brownImageOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
+	auto whiteImage = whiteImageOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
 
 	for (int i = 0; i < blockCount; i++)
 	{
