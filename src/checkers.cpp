@@ -38,8 +38,8 @@ Checkers::Checkers() : width(800), height(800)
 					path = "./resources/block_brown.jpg";
 			}
 
-			// Glib::RefPtr<Gdk::Pixbuf> image = Gdk::Pixbuf::create_from_file(path, 90, 90, true);
-			Glib::RefPtr<Gdk::Pixbuf> image = Gdk::Pixbuf::create_from_file(path);
+			Glib::RefPtr<Gdk::Pixbuf> image = Gdk::Pixbuf::create_from_file(path, 100, 100, true);
+			// Glib::RefPtr<Gdk::Pixbuf> image = Gdk::Pixbuf::create_from_file(path);
 			images[i][j].set(image);
 
 			// images[i][j].set_hexpand(true);
@@ -55,7 +55,9 @@ Checkers::Checkers() : width(800), height(800)
 		}
 	}
 
-	myBox.pack_start(myGrid);
+	winec.add(myGrid);
+
+	myBox.pack_start(winec);
 
 	show_all_children();
 }
@@ -84,11 +86,66 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 
 	// cout << "Configure changed" << " " << event->width << endl;
 
+	bool changed = false;
+
 	if (newWidth != width)
+	{
 		width = newWidth;
+		changed = true;
+	}
 
 	if (newHeight != height)
+	{
 		height = newHeight;
+		changed = true;
+	}
+
+	if (changed == false)
+		return false;
+
+	if (width < height)
+	{
+		width = height;
+		// resize(width, height);
+	}
+	else if (width > height)
+	{
+		height = width;
+		// resize(width, height);
+	}
+
+	resize(width, height);
+
+	// if (height & 1)
+	// 	height--;
+	
+	int chunk = height / 8;
+
+	for (int i = 0; i < blockCount; i++)
+	{
+		for (int j = 0; j < blockCount; j++)
+		{
+			string path = "";
+
+			if (i & 1)
+			{
+				if (j & 1)
+					path = "./resources/block_brown.jpg";
+				else
+					path = "./resources/block_white.jpg";
+			}
+			else
+			{
+				if (j & 1)
+					path = "./resources/block_white.jpg";
+				else
+					path = "./resources/block_brown.jpg";
+			}
+
+			Glib::RefPtr<Gdk::Pixbuf> image = Gdk::Pixbuf::create_from_file(path, chunk, chunk, true);
+			images[i][j].set(image);
+		}
+	}
 
 	return false;
 }
