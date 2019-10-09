@@ -29,8 +29,31 @@ Checkers::Checkers()
 	add_events(Gdk::STRUCTURE_MASK);
 	signal_configure_event().connect(sigc::mem_fun(*this, &Checkers::onConfigureChanged), false);
 
-	brownImageOriginal = Gdk::Pixbuf::create_from_file("./resources/block_brown.jpg");
-	whiteImageOriginal = Gdk::Pixbuf::create_from_file("./resources/block_white.jpg");
+	blockBrownOriginal = Gdk::Pixbuf::create_from_file("./resources/block_brown.jpg");
+	blockWhiteOriginal = Gdk::Pixbuf::create_from_file("./resources/block_white.jpg");
+	stoneBlackOriginal = Gdk::Pixbuf::create_from_file("./resources/stone_brown.jpg");
+	stoneWhiteOriginal = Gdk::Pixbuf::create_from_file("./resources/stone_white.jpg");
+	queenBlackOriginal = Gdk::Pixbuf::create_from_file("./resources/queen_brown.jpg");
+	queenWhiteOriginal = Gdk::Pixbuf::create_from_file("./resources/queen_white.jpg");
+	stoneBlackSelectOriginal = Gdk::Pixbuf::create_from_file("./resources/stone_brown_select.jpg");
+	stoneWhiteSelectOriginal = Gdk::Pixbuf::create_from_file("./resources/stone_white_select.jpg");
+	queenBlackSelectOriginal = Gdk::Pixbuf::create_from_file("./resources/queen_brown_select.jpg");
+	queenWhiteSelectOriginal = Gdk::Pixbuf::create_from_file("./resources/queen_white_select.jpg");
+	moveCircleOriginal = Gdk::Pixbuf::create_from_file("./resources/move.jpg");
+	jumpCircleOriginal = Gdk::Pixbuf::create_from_file("./resources/jump.jpg");
+
+	blockBrown = blockBrownOriginal;
+	blockWhite = blockWhiteOriginal;
+	stoneBlack = stoneBlackOriginal;
+	stoneWhite = stoneWhiteOriginal;
+	queenBlack = queenBlackOriginal;
+	queenWhite = queenWhiteOriginal;
+	stoneBlackSelect = stoneBlackSelectOriginal;
+	stoneWhiteSelect = stoneWhiteSelectOriginal;
+	queenBlackSelect = queenBlackSelectOriginal;
+	queenWhiteSelect = queenWhiteSelectOriginal;
+	moveCircle = moveCircleOriginal;
+	jumpCircle = jumpCircleOriginal;
 
 	for (int i = 0; i < blockCount; i++)
 	{
@@ -41,16 +64,16 @@ Checkers::Checkers()
 			if (i & 1)
 			{
 				if (j & 1)
-					images[i][j].set(brownImageOriginal);
+					images[i][j].set(blockBrown);
 				else
-					images[i][j].set(whiteImageOriginal);
+					images[i][j].set(blockWhite);
 			}
 			else
 			{
 				if (j & 1)
-					images[i][j].set(whiteImageOriginal);
+					images[i][j].set(blockWhite);
 				else
-					images[i][j].set(brownImageOriginal);
+					images[i][j].set(blockBrown);
 			}
 
 			// images[i][j].set_hexpand(true);
@@ -60,7 +83,6 @@ Checkers::Checkers()
 			eventBoxes[i][j].add(images[i][j]);
 			eventBoxes[i][j].set_events(Gdk::BUTTON_PRESS_MASK);
 			eventBoxes[i][j].signal_button_press_event().connect(sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Checkers::onEventboxButtonPress), message));
-			// eventBoxes[i][j].set_tooltip_text("Click to exit");
 
 			myGrid.attach(eventBoxes[i][j], i, j, 1, 1);
 		}
@@ -68,13 +90,35 @@ Checkers::Checkers()
 
 	scrolledWindow.add(myGrid);
 
-	// myBox.pack_start(scrolledWindow);
-
 	show_all_children();
 }
 
 Checkers::~Checkers()
 {
+}
+
+void Checkers::refreshBoard()
+{
+	for (int i = 0; i < blockCount; i++)
+	{
+		for (int j = 0; j < blockCount; j++)
+		{
+			if (i & 1)
+			{
+				if (j & 1)
+					images[i][j].set(blockBrown);
+				else
+					images[i][j].set(blockWhite);
+			}
+			else
+			{
+				if (j & 1)
+					images[i][j].set(blockWhite);
+				else
+					images[i][j].set(blockBrown);
+			}
+		}
+	}
 }
 
 void Checkers::onButtonClicked(Glib::ustring data)
@@ -84,9 +128,68 @@ void Checkers::onButtonClicked(Glib::ustring data)
 
 bool Checkers::onEventboxButtonPress(GdkEventButton * /*button_event*/, Glib::ustring data)
 {
-	cout << data << endl;
+	int x;
+	int y;
 
-	hide();
+	switch (data[0])
+	{
+		case '0':
+			x = 0;
+			break;
+		case '1':
+			x = 1;
+			break;
+		case '2':
+			x = 2;
+			break;
+		case '3':
+			x = 3;
+			break;
+		case '4':
+			x = 4;
+			break;
+		case '5':
+			x = 5;
+			break;
+		case '6':
+			x = 6;
+			break;
+		default:
+			x = 7;
+			break;
+	}
+
+	switch (data[1])
+	{
+		case '0':
+			y = 0;
+			break;
+		case '1':
+			y = 1;
+			break;
+		case '2':
+			y = 2;
+			break;
+		case '3':
+			y = 3;
+			break;
+		case '4':
+			y = 4;
+			break;
+		case '5':
+			y = 5;
+			break;
+		case '6':
+			y = 6;
+			break;
+		default:
+			y = 7;
+			break;
+	}
+
+	cout << x << ", " << y << endl;
+
+	// hide();
 	return true;
 }
 
@@ -120,29 +223,20 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 	int chunk = (height - 2 * borderWidth) / 8;
 	int trail = (height - 2 * borderWidth) % 8;
 
-	auto brownImage = brownImageOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
-	auto whiteImage = whiteImageOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
+	blockBrown = blockBrownOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+	blockWhite = blockWhiteOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+	stoneBlack = stoneBlackOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+	stoneWhite = stoneWhiteOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+	queenBlack = queenBlackOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+	queenWhite = queenWhiteOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+	stoneBlackSelect = stoneBlackSelectOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+	stoneWhiteSelect = stoneWhiteSelectOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+	queenBlackSelect = queenBlackSelectOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+	queenWhiteSelect = queenWhiteSelectOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+	moveCircle = moveCircleOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+	jumpCircle = jumpCircleOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
 
-	for (int i = 0; i < blockCount; i++)
-	{
-		for (int j = 0; j < blockCount; j++)
-		{
-			if (i & 1)
-			{
-				if (j & 1)
-					images[i][j].set(brownImage);
-				else
-					images[i][j].set(whiteImage);
-			}
-			else
-			{
-				if (j & 1)
-					images[i][j].set(whiteImage);
-				else
-					images[i][j].set(brownImage);
-			}
-		}
-	}
+	refreshBoard();
 
 	width -= trail;
 	height -= trail;
