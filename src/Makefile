@@ -8,4 +8,7 @@ main.o: main.cpp checkers.h
 	g++ -std=c++14 -Wall -Wextra -pedantic -O3 `pkg-config --cflags gtkmm-3.0` main.cpp -c `pkg-config --libs gtkmm-3.0`
 
 clean:
-	rm -f checkers.o main.o checkers
+	@rm -f checkers.o main.o checkers
+
+run:
+	@make -s -j2 && ./checkers

@@ -86,7 +86,7 @@ bool Checkers::onEventboxButtonPress(GdkEventButton * /*button_event*/, Glib::us
 {
 	cout << data << endl;
 
-	// hide();
+	hide();
 	return true;
 }
 
@@ -94,8 +94,6 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 {
 	int newWidth = event->width;
 	int newHeight = event->height;
-
-	cout << "Event: " << newWidth << ", " << newHeight << endl;
 
 	bool changed = false;
 
@@ -121,8 +119,6 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 	
 	int chunk = (height - 2 * borderWidth) / 8;
 	int trail = (height - 2 * borderWidth) % 8;
-
-	cout << "Area: " << chunk * 8 << endl;
 
 	auto brownImage = brownImageOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
 	auto whiteImage = whiteImageOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
@@ -150,8 +146,6 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 
 	width -= trail;
 	height -= trail;
-
-	cout << "After: " << width << ", " << height << endl;
 
 	resize(width, height);
 
