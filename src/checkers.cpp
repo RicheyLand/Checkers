@@ -2198,6 +2198,10 @@ bool Checkers::onEventboxButtonPress(GdkEventButton * /*button_event*/, Glib::us
 
     click_reaction(y, x);
 
+    int M = move_hint.size();
+    int N = stones_to_remove.size();
+    cout << M << ", " << N << ", " << selected << ", " << only_jumping << endl;
+
     // hide();
     return true;
 }
@@ -2249,6 +2253,40 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
     {
         for (int j = 0; j < blockCount; j++)
             reset_board_color(i, j);
+    }
+
+    if (selected)
+    {
+        int x = select.x;
+        int y = select.y;
+
+        if (queens[y][x])
+        {
+            if (white_playing)
+                images[x][y].set(queenWhiteSelect);
+            else
+                images[x][y].set(queenBlackSelect);
+        }
+        else
+        {
+            if (white_playing)
+                images[x][y].set(stoneWhiteSelect);
+            else
+                images[x][y].set(stoneBlackSelect);
+        }
+    }
+
+    int N = move_hint.size();
+    
+    if (only_jumping)
+    {
+        for (int i = 0; i < N; i++)
+            images[move_hint[i].x][move_hint[i].y].set(jumpCircle);
+    }
+    else
+    {
+        for (int i = 0; i < N; i++)
+            images[move_hint[i].x][move_hint[i].y].set(moveCircle);
     }
 
     width -= trail;
