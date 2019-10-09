@@ -2,19 +2,25 @@
 
 Checkers::Checkers()
 {
-	borderWidth = 0;
+	borderWidth = 2;
 	width = 920;
 	height = 920;
 	blockWidth = width / 8;
-	width += borderWidth;
-	height += borderWidth;
+	width = width + 2 * borderWidth;
+	height = height + 2 * borderWidth;
+
+	// headerBar.set_title("Checkers");
+	// headerBar.set_has_subtitle(false);
+	// headerBar.set_size_request(-1, 50);
 
 	set_title("Checkers");
 	set_default_size(width, height);
 	set_border_width(borderWidth);
 	override_background_color(Gdk::RGBA("black"), Gtk::STATE_FLAG_NORMAL);
 
-	add(myBox);
+	// set_titlebar(headerBar);
+
+	add(scrolledWindow);
 
 	// myButton.set_label("Click");
 	// myButton.signal_clicked().connect(sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Checkers::onButtonClicked), "Button 1"));
@@ -62,7 +68,7 @@ Checkers::Checkers()
 
 	scrolledWindow.add(myGrid);
 
-	myBox.pack_start(scrolledWindow);
+	// myBox.pack_start(scrolledWindow);
 
 	show_all_children();
 }
@@ -89,7 +95,7 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 	int newWidth = event->width;
 	int newHeight = event->height;
 
-	// cout << "Configure changed" << " " << event->width << endl;
+	cout << "Event: " << newWidth << ", " << newHeight << endl;
 
 	bool changed = false;
 
@@ -113,8 +119,10 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 	else if (width > height)
 		height = width;
 	
-	int chunk = (height - borderWidth) / 8;
-	int trail = (height - borderWidth) % 8;
+	int chunk = (height - 2 * borderWidth) / 8;
+	int trail = (height - 2 * borderWidth) % 8;
+
+	cout << "Area: " << chunk * 8 << endl;
 
 	auto brownImage = brownImageOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
 	auto whiteImage = whiteImageOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
@@ -142,6 +150,8 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 
 	width -= trail;
 	height -= trail;
+
+	cout << "After: " << width << ", " << height << endl;
 
 	resize(width, height);
 

@@ -17,14 +17,15 @@ private:
 	bool onConfigureChanged(GdkEventConfigure *);
 
 	static const int blockCount = 8;
-
 	int borderWidth;
 	int blockWidth;
 	int width;
 	int height;
+
+	// Gtk::HeaderBar headerBar;
 	
 	Gtk::ScrolledWindow scrolledWindow;
-	Gtk::Box myBox;
+	// Gtk::Box myBox;
 	Gtk::Grid myGrid;
 	Gtk::Button myButton;
 
