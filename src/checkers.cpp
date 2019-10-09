@@ -17,6 +17,7 @@ Checkers::Checkers()
     set_default_size(width, height);
     set_border_width(borderWidth);
     override_background_color(Gdk::RGBA("black"), Gtk::STATE_FLAG_NORMAL);
+    set_icon_from_file("./resources/app_icon.png");
 
     // set_titlebar(headerBar);
 
