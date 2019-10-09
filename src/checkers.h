@@ -32,7 +32,6 @@ private:
     deque<Coordinates> move_hint;                       //  list of green move hint cells coordinates
     deque<Coordinates> stones_to_remove;                //  list of stones that are going to be removed after jump
 
-
 	static const int blockCount = 8;
 	int borderWidth;
 	int blockWidth;
@@ -74,7 +73,8 @@ private:
 	Glib::RefPtr<Gdk::Pixbuf> moveCircle;
 	Glib::RefPtr<Gdk::Pixbuf> jumpCircle;
 
-	void refreshBoard();
+	void initArrays();
+	void refreshBlockImage(int &, int &);
 
 	void onButtonClicked(Glib::ustring);
 	bool onEventboxButtonPress(GdkEventButton *, Glib::ustring);

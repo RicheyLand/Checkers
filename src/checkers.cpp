@@ -55,26 +55,15 @@ Checkers::Checkers()
 	moveCircle = moveCircleOriginal;
 	jumpCircle = jumpCircleOriginal;
 
+	initArrays();
+
 	for (int i = 0; i < blockCount; i++)
 	{
 		for (int j = 0; j < blockCount; j++)
 		{
 			string message = to_string(i) + to_string(j);
 
-			if (i & 1)
-			{
-				if (j & 1)
-					images[i][j].set(blockBrown);
-				else
-					images[i][j].set(blockWhite);
-			}
-			else
-			{
-				if (j & 1)
-					images[i][j].set(blockWhite);
-				else
-					images[i][j].set(blockBrown);
-			}
+			refreshBlockImage(i, j);
 
 			// images[i][j].set_hexpand(true);
 			// images[i][j].set_vexpand(true);
@@ -97,28 +86,81 @@ Checkers::~Checkers()
 {
 }
 
-void Checkers::refreshBoard()
+void Checkers::initArrays()
 {
-	for (int i = 0; i < blockCount; i++)
-	{
-		for (int j = 0; j < blockCount; j++)
+	selected = false;                                   //  no cell is selected
+    white_playing = true;                               //  first player is on turn at start of game
+    only_jumping = 0;                                   //  insane to jump at the beginning of game
+    turn_started = false;                               //  multiple jump is not possible at the beginning of game
+
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+            whites[i][j] = blacks[i][j] = queens[i][j] = false;     //  clear all description arrays
+    }
+
+    whites[0][1] = true;                                //  set default positions of all stones
+    whites[0][3] = true;
+    whites[0][5] = true;
+    whites[0][7] = true;
+    whites[1][0] = true;
+    whites[1][2] = true;
+    whites[1][4] = true;
+    whites[1][6] = true;
+    whites[2][1] = true;
+    whites[2][3] = true;
+    whites[2][5] = true;
+    whites[2][7] = true;
+
+    blacks[5][0] = true;
+    blacks[5][2] = true;
+    blacks[5][4] = true;
+    blacks[5][6] = true;
+    blacks[6][1] = true;
+    blacks[6][3] = true;
+    blacks[6][5] = true;
+    blacks[6][7] = true;
+    blacks[7][0] = true;
+    blacks[7][2] = true;
+    blacks[7][4] = true;
+    blacks[7][6] = true;
+
+    game_over = false;                                  //  game is not over by default
+}
+
+void Checkers::refreshBlockImage(int & x, int & y)
+{
+	if (whites[y][x])                                   //  white stone have to be on this cell
+    {
+        if (queens[y][x])                               //  queen
+            images[x][y].set(queenWhite);       		//  load white queen image on this cell
+        else                                            //  stone
+            images[x][y].set(stoneWhite);       		//  load white stone image on this cell
+    }
+    else if (blacks[y][x])                              //  black stone have to be on this cell
+    {
+        if (queens[y][x])                               //  queen
+            images[x][y].set(queenBlack);       		//  load black queen image onto this cell
+        else                                            //  stone
+            images[x][y].set(stoneBlack);       		//  load black stone image onto this cell
+    }
+    else                                                //  this cell have to be empty
+    {
+        if (x & 1)
 		{
-			if (i & 1)
-			{
-				if (j & 1)
-					images[i][j].set(blockBrown);
-				else
-					images[i][j].set(blockWhite);
-			}
+			if (y & 1)
+				images[x][y].set(blockWhite);
 			else
-			{
-				if (j & 1)
-					images[i][j].set(blockWhite);
-				else
-					images[i][j].set(blockBrown);
-			}
+				images[x][y].set(blockBrown);
 		}
-	}
+		else
+		{
+			if (y & 1)
+				images[x][y].set(blockBrown);
+			else
+				images[x][y].set(blockWhite);
+		}
+    }
 }
 
 void Checkers::onButtonClicked(Glib::ustring data)
@@ -236,7 +278,11 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 	moveCircle = moveCircleOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
 	jumpCircle = jumpCircleOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
 
-	refreshBoard();
+	for (int i = 0; i < blockCount; i++)
+	{
+		for (int j = 0; j < blockCount; j++)
+			refreshBlockImage(i, j);
+	}
 
 	width -= trail;
 	height -= trail;
