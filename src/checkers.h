@@ -5,49 +5,48 @@
 #include <iostream>
 using namespace std;
 
-class coordinates                                       //  class which represents matrix coordinates
+class Coordinates                                               //  class which represents matrix coordinates
 {
 public:
-    int x;                                              //  domain value
-    int y;                                              //  relace value
+    int x;                                                      //  domain value
+    int y;                                                      //  relace value
 };
 
-class Checkers : public Gtk::Window
+class Checkers : public Gtk::Window                             //  implements game window
 {
 public:
     Checkers();
     virtual ~Checkers();
 
 private:
-    bool white_playing;                                 //  holds which player is on turn
-    bool whites[8][8];                                  //  locations of white stones
-    bool blacks[8][8];                                  //  locations of black stones
-    bool queens[8][8];                                  //  locations of queens
-    bool selected;                                      //  flag if red selection cell is active
-    int only_jumping;                                   //  0 = move(any); 1 = stone jump; 2 = queen jump
-    bool turn_started;                                  //  prevents selecting another jump stone when multiple jump has been started
-    bool game_over;                                     //  game over flag
+    bool whitePlaying;                                          //  holds which player is on turn
+    bool whites[8][8];                                          //  locations of white stones
+    bool blacks[8][8];                                          //  locations of black stones
+    bool queens[8][8];                                          //  locations of queens
+    bool selected;                                              //  flag if red selection cell is active
+    int onlyJumping;                                            //  0 = move(any); 1 = stone jump; 2 = queen jump
+    bool turnStarted;                                           //  prevents selecting another jump stone when multiple jump has been started
+    bool gameOver;                                              //  game over flag
 
-    coordinates select;                                 //  red selection cell coordinates
-    deque<coordinates> move_hint;                       //  list of green move hint cells coordinates
-    deque<coordinates> stones_to_remove;                //  list of stones that are going to be removed after jump
+    Coordinates select;                                         //  red selection cell coordinates
+    deque<Coordinates> moveHint;                                //  list of green move hint cells coordinates
+    deque<Coordinates> stonesToRemove;                          //  list of stones that are going to be removed after jump
 
-    static const int blockCount = 8;
-    int borderWidth;
-    int blockWidth;
-    int width;
-    int height;
+    static const int blockCount = 8;                            //  number of game board blocks in one column
+    int borderWidth;                                            //  window border width value
+    int blockWidth;                                             //  game board block width value
+    int width;                                                  //  width value of the window
+    int height;                                                 //  height value of the window
 
     // Gtk::HeaderBar headerBar;
     
-    Gtk::ScrolledWindow scrolledWindow;
-    Gtk::Grid myGrid;
-    Gtk::Button myButton;
+    Gtk::ScrolledWindow scrolledWindow;                         //  scrolled window wrapper
+    Gtk::Grid myGrid;                                           //  grid which holds all the game board blocks
 
-    Gtk::Image images[blockCount][blockCount];
-    Gtk::EventBox eventBoxes[blockCount][blockCount];
+    Gtk::Image images[blockCount][blockCount];                  //  matrix of game board block images
+    Gtk::EventBox eventBoxes[blockCount][blockCount];           //  bounding event box for all block image
 
-    Glib::RefPtr<Gdk::Pixbuf> blockBrownOriginal;
+    Glib::RefPtr<Gdk::Pixbuf> blockBrownOriginal;               //  pixel buffers of all required game images(original size)
     Glib::RefPtr<Gdk::Pixbuf> blockWhiteOriginal;
     Glib::RefPtr<Gdk::Pixbuf> stoneBlackOriginal;
     Glib::RefPtr<Gdk::Pixbuf> stoneWhiteOriginal;
@@ -60,7 +59,7 @@ private:
     Glib::RefPtr<Gdk::Pixbuf> moveCircleOriginal;
     Glib::RefPtr<Gdk::Pixbuf> jumpCircleOriginal;
 
-    Glib::RefPtr<Gdk::Pixbuf> blockBrown;
+    Glib::RefPtr<Gdk::Pixbuf> blockBrown;                       //  pixel buffers of all required game images(scaled size)
     Glib::RefPtr<Gdk::Pixbuf> blockWhite;
     Glib::RefPtr<Gdk::Pixbuf> stoneBlack;
     Glib::RefPtr<Gdk::Pixbuf> stoneWhite;
@@ -73,15 +72,14 @@ private:
     Glib::RefPtr<Gdk::Pixbuf> moveCircle;
     Glib::RefPtr<Gdk::Pixbuf> jumpCircle;
 
-    void initArrays();
-    void reset_board_color(int &, int &);
-    void jump_predicate();
-    bool is_game_over();
-    void click_reaction(int, int);
+    void initArrays();                                          //  initialize game board data to the default state
+    void resetBoardColor(int &, int &);                         //  update image of desired board block
+    void jumpPredicate();                                       //  calculates possible range of stone jumping
+    bool isGameOver();                                          //  calculates if the game is finally over
+    void clickReaction(int, int);                               //  implements reaction to the game board click
 
-    void onButtonClicked(Glib::ustring);
-    bool onEventboxButtonPress(GdkEventButton *, Glib::ustring);
-    bool onConfigureChanged(GdkEventConfigure *);
+    bool onEventboxButtonPress(GdkEventButton *, Glib::ustring);    //  event box click implementation
+    bool onConfigureChanged(GdkEventConfigure *);               //  window resize is handled by this method
 };
 
 #endif
