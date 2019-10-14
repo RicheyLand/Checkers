@@ -73,6 +73,8 @@ Checkers::Checkers()
 
     myGrid.set_halign(Gtk::ALIGN_CENTER);
     myGrid.set_valign(Gtk::ALIGN_CENTER);
+    scrolledWindow.set_min_content_width(480);
+    scrolledWindow.set_min_content_height(480);
     scrolledWindow.add(myGrid);                                 //  add grid into the scrolled window to allow window shrink
 
     show_all_children();                                        //  show all child widgets of window
