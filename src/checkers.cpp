@@ -66,10 +66,13 @@ Checkers::Checkers()
             eventBoxes[i][j].set_events(Gdk::BUTTON_PRESS_MASK);
             eventBoxes[i][j].signal_button_press_event().connect(sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Checkers::onEventboxButtonPress), message));
 
+
             myGrid.attach(eventBoxes[i][j], i, j, 1, 1);        //  add next image into the grid object
         }
     }
 
+    myGrid.set_halign(Gtk::ALIGN_CENTER);
+    myGrid.set_valign(Gtk::ALIGN_CENTER);
     scrolledWindow.add(myGrid);                                 //  add grid into the scrolled window to allow window shrink
 
     show_all_children();                                        //  show all child widgets of window
@@ -2212,26 +2215,25 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
     if (changed == false)                                       //  exit method if window dimensions are the same
         return false;
 
-    if (width < height)                                         //  both width and height of the window must have same value
-        width = height;
-    else if (width > height)
-        height = width;
-    
-    int chunk = (height - 2 * borderWidth) / 8;                 //  calculate exact size of block image for current window size
-    int trail = (height - 2 * borderWidth) % 8;                 //  check if there would be any trailing pixel
-                                                                //  scale all pixel buffers to the calculated block size
-    blockBrown = blockBrownOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
-    blockWhite = blockWhiteOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
-    stoneBlack = stoneBlackOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
-    stoneWhite = stoneWhiteOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
-    queenBlack = queenBlackOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
-    queenWhite = queenWhiteOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
-    stoneBlackSelect = stoneBlackSelectOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
-    stoneWhiteSelect = stoneWhiteSelectOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
-    queenBlackSelect = queenBlackSelectOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
-    queenWhiteSelect = queenWhiteSelectOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
-    moveCircle = moveCircleOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
-    jumpCircle = jumpCircleOriginal->scale_simple(chunk, chunk, Gdk::INTERP_HYPER);
+    int chunk;
+
+    if (width < height)
+        chunk = (width - 2 * borderWidth) / 8;
+    else
+        chunk = (height - 2 * borderWidth) / 8;
+
+    blockBrown = blockBrownOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);     //  scale all pixel buffers to the calculated block size
+    blockWhite = blockWhiteOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+    stoneBlack = stoneBlackOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+    stoneWhite = stoneWhiteOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+    queenBlack = queenBlackOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+    queenWhite = queenWhiteOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+    stoneBlackSelect = stoneBlackSelectOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+    stoneWhiteSelect = stoneWhiteSelectOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+    queenBlackSelect = queenBlackSelectOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+    queenWhiteSelect = queenWhiteSelectOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+    moveCircle = moveCircleOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
+    jumpCircle = jumpCircleOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
 
     for (int i = 0; i < blockCount; i++)                        //  iterate through all game board blocks
     {
@@ -2272,12 +2274,6 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
                 images[moveHint[i].x][moveHint[i].y].set(moveCircle);   //  use appropriate scaled image for selected block
         }
     }
-
-    width -= trail;                                             //  cut trailing pixels out of the window
-    height -= trail;
-
-    if (trail)
-        resize(width, height);                                  //  call resize method after cutting trailing pixels
 
     return false;
 }
