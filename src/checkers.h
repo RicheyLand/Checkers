@@ -40,6 +40,9 @@ private:
     int height;                                                 //  height value of the window
 
     Gtk::HeaderBar headerBar;
+    Gtk::Button restartButton;
+    Gtk::Button saveButton;
+    Gtk::Button loadButton;
     
     Gtk::ScrolledWindow scrolledWindow;                         //  scrolled window wrapper
     Gtk::Grid myGrid;                                           //  grid which holds all the game board blocks

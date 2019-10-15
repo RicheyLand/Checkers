@@ -14,11 +14,20 @@ Checkers::Checkers()
     width += 16;
     height += 16;
 
+    restartButton.set_image_from_icon_name("view-refresh");
+    restartButton.set_tooltip_text("Start new game");
+    saveButton.set_image_from_icon_name("document-save");
+    saveButton.set_tooltip_text("Save game progress");
+    loadButton.set_image_from_icon_name("document-open");
+    loadButton.set_tooltip_text("Load saved game");
     headerBar.set_title("Checkers");
-    headerBar.set_subtitle("Cross-platform board game");
     headerBar.set_has_subtitle(false);
     headerBar.set_size_request(-1, headerBarHeight);
     headerBar.set_show_close_button(true);
+    headerBar.pack_start(restartButton);
+    headerBar.pack_end(saveButton);
+    headerBar.pack_end(loadButton);
+    headerBar.unset_decoration_layout();
     set_titlebar(headerBar);
 
     cout << headerBar.get_allocated_height() << endl;
@@ -26,7 +35,7 @@ Checkers::Checkers()
     set_title("Checkers");                                      //  set appropriate attributes of the window object
     set_default_size(width, height);
     set_border_width(borderWidth);
-    override_background_color(Gdk::RGBA("black"), Gtk::STATE_FLAG_NORMAL);
+    override_background_color(Gdk::RGBA("rgb(30,30,30)"), Gtk::STATE_FLAG_NORMAL);
     set_icon_from_file("./resources/app_icon.png");
 
     add(scrolledWindow);                                        //  set scrolled window as main widget of the window
@@ -95,6 +104,7 @@ void Checkers::initArrays()
 {
     selected = false;                                           //  no cell is selected
     whitePlaying = true;                                        //  first player is on turn at start of game
+    headerBar.set_subtitle("The white player's turn");
     onlyJumping = 0;                                            //  insane to jump at the beginning of game
     turnStarted = false;                                        //  multiple jump is not possible at the beginning of game
 
@@ -1313,6 +1323,7 @@ void Checkers::clickReaction(int y, int x)
 
                     selected = false;                           //  remove selection flag
                     whitePlaying = false;                       //  black player will be on turn
+                    headerBar.set_subtitle("The black player's turn");
                     turnStarted = false;                        //  selecting another stone is enabled from this moment
 
                     jumpPredicate();                            //  predicate jump situations
@@ -2124,6 +2135,7 @@ void Checkers::clickReaction(int y, int x)
 
                     selected = false;                           //  remove selection flag
                     whitePlaying = true;                        //  white player will be on turn
+                    headerBar.set_subtitle("The white player's turn");
                     turnStarted = false;                        //  selecting another stone is enabled from this moment
 
                     jumpPredicate();                            //  predicate jump situations
