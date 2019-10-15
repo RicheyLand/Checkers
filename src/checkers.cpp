@@ -3,13 +3,16 @@
 Checkers::Checkers()
 {
     headerBarHeight = 50;
-    borderWidth = 2;                                            //  setup default window dimensions and border size
+    borderWidth = 0;                                            //  setup default window dimensions and border size
     width = 920;
     height = 920;
     blockWidth = width / 8;
     width = width + 2 * borderWidth;
     height = height + 2 * borderWidth;
     height += headerBarHeight;
+
+    width += 16;
+    height += 16;
 
     headerBar.set_title("Checkers");
     headerBar.set_subtitle("Cross-platform board game");
@@ -2229,9 +2232,9 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
     int chunk;
 
     if (width < height - headerBarHeight)
-        chunk = (width - 2 * borderWidth) / 8;
+        chunk = (width - 16 - 2 * borderWidth) / 8;
     else
-        chunk = (height - headerBarHeight - 2 * borderWidth) / 8;
+        chunk = (height - 16 - headerBarHeight - 2 * borderWidth) / 8;
 
     blockBrown = blockBrownOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);     //  scale all pixel buffers to the calculated block size
     blockWhite = blockWhiteOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
