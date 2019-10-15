@@ -124,6 +124,9 @@ void Checkers::initArrays()
             whites[i][j] = blacks[i][j] = queens[i][j] = false;     //  clear all description arrays
     }
 
+    moveHint.clear();
+    stonesToRemove.clear();
+
     whites[0][1] = true;                                        //  set default positions of all white stones
     whites[0][3] = true;
     whites[0][5] = true;
@@ -2254,7 +2257,13 @@ bool Checkers::onKeyPress(GdkEventKey * event)
 
 void Checkers::onRestartButtonClicked()
 {
-    cout << "onRestartButtonClicked" << endl;
+    initArrays();
+
+    for (int i = 0; i < blockCount; i++)                        //  iterate through all game board blocks
+    {
+        for (int j = 0; j < blockCount; j++)
+            resetBoardColor(i, j);                              //  use appropriate image for current position
+    }
 }
 
 void Checkers::onSaveButtonClicked()
