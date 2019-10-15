@@ -9,9 +9,9 @@ Checkers::Checkers()
     width = width + 2 * borderWidth;
     height = height + 2 * borderWidth;
 
-    // headerBar.set_title("Checkers");
-    // headerBar.set_has_subtitle(false);
-    // headerBar.set_size_request(-1, 50);
+    headerBar.set_title("Checkers");
+    headerBar.set_has_subtitle(false);
+    headerBar.set_size_request(-1, 42);
 
     set_title("Checkers");                                      //  set appropriate attributes of the window object
     set_default_size(width, height);
@@ -19,7 +19,7 @@ Checkers::Checkers()
     override_background_color(Gdk::RGBA("black"), Gtk::STATE_FLAG_NORMAL);
     set_icon_from_file("./resources/app_icon.png");
 
-    // set_titlebar(headerBar);
+    set_titlebar(headerBar);
 
     add(scrolledWindow);                                        //  set scrolled window as main widget of the window
 
@@ -65,7 +65,6 @@ Checkers::Checkers()
             eventBoxes[i][j].add(images[i][j]);
             eventBoxes[i][j].set_events(Gdk::BUTTON_PRESS_MASK);
             eventBoxes[i][j].signal_button_press_event().connect(sigc::bind<Glib::ustring>(sigc::mem_fun(*this, &Checkers::onEventboxButtonPress), message));
-
 
             myGrid.attach(eventBoxes[i][j], i, j, 1, 1);        //  add next image into the grid object
         }
