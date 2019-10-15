@@ -16,21 +16,26 @@ Checkers::Checkers()
 
     restartButton.set_image_from_icon_name("view-refresh");
     restartButton.set_tooltip_text("Start new game");
+    restartButton.set_size_request(45, 45);
     saveButton.set_image_from_icon_name("document-save");
     saveButton.set_tooltip_text("Save game progress");
+    saveButton.set_size_request(45, 45);
     loadButton.set_image_from_icon_name("document-open");
     loadButton.set_tooltip_text("Load saved game");
+    loadButton.set_size_request(45, 45);
+    fullscreenButton.set_image_from_icon_name("view-fullscreen");
+    fullscreenButton.set_tooltip_text("Toggle fullscreen mode");
+    fullscreenButton.set_size_request(45, 45);
     headerBar.set_title("Checkers");
     headerBar.set_has_subtitle(false);
     headerBar.set_size_request(-1, headerBarHeight);
     headerBar.set_show_close_button(true);
-    headerBar.pack_start(restartButton);
+    headerBar.pack_start(fullscreenButton);
+    headerBar.pack_end(restartButton);
     headerBar.pack_end(saveButton);
     headerBar.pack_end(loadButton);
     headerBar.unset_decoration_layout();
     set_titlebar(headerBar);
-
-    cout << headerBar.get_allocated_height() << endl;
 
     set_title("Checkers");                                      //  set appropriate attributes of the window object
     set_default_size(width, height);
@@ -2216,13 +2221,8 @@ bool Checkers::onEventboxButtonPress(GdkEventButton * /*button_event*/, Glib::us
 
 bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 {
-    // cout << headerBar.get_allocated_height() << endl;
-    // cout << get_allocated_width() << ", " << get_allocated_height() << endl;
-
     int newWidth = event->width;                                //  get current dimensions of the window
     int newHeight = event->height;
-
-    // cout << newWidth << ", " << newHeight << endl;
 
     bool changed = false;                                       //  holds if window size has been changed
 

@@ -43,6 +43,7 @@ private:
     Gtk::Button restartButton;
     Gtk::Button saveButton;
     Gtk::Button loadButton;
+    Gtk::Button fullscreenButton;
     
     Gtk::ScrolledWindow scrolledWindow;                         //  scrolled window wrapper
     Gtk::Grid myGrid;                                           //  grid which holds all the game board blocks
