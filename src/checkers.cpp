@@ -2,26 +2,29 @@
 
 Checkers::Checkers()
 {
+    headerBarHeight = 50;
     borderWidth = 2;                                            //  setup default window dimensions and border size
     width = 920;
     height = 920;
     blockWidth = width / 8;
     width = width + 2 * borderWidth;
     height = height + 2 * borderWidth;
+    height += headerBarHeight;
 
     headerBar.set_title("Checkers");
     headerBar.set_subtitle("Cross-platform board game");
     headerBar.set_has_subtitle(false);
-    headerBar.set_size_request(-1, 50);
+    headerBar.set_size_request(-1, headerBarHeight);
     headerBar.set_show_close_button(true);
+    set_titlebar(headerBar);
+
+    cout << headerBar.get_allocated_height() << endl;
 
     set_title("Checkers");                                      //  set appropriate attributes of the window object
     set_default_size(width, height);
     set_border_width(borderWidth);
     override_background_color(Gdk::RGBA("black"), Gtk::STATE_FLAG_NORMAL);
     set_icon_from_file("./resources/app_icon.png");
-
-    set_titlebar(headerBar);
 
     add(scrolledWindow);                                        //  set scrolled window as main widget of the window
 
@@ -2198,10 +2201,13 @@ bool Checkers::onEventboxButtonPress(GdkEventButton * /*button_event*/, Glib::us
 
 bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 {
-    cout << headerBar.get_allocated_height() << endl;
+    // cout << headerBar.get_allocated_height() << endl;
+    // cout << get_allocated_width() << ", " << get_allocated_height() << endl;
 
     int newWidth = event->width;                                //  get current dimensions of the window
     int newHeight = event->height;
+
+    // cout << newWidth << ", " << newHeight << endl;
 
     bool changed = false;                                       //  holds if window size has been changed
 
@@ -2222,10 +2228,10 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 
     int chunk;
 
-    if (width < height)
+    if (width < height - headerBarHeight)
         chunk = (width - 2 * borderWidth) / 8;
     else
-        chunk = (height - 2 * borderWidth) / 8;
+        chunk = (height - headerBarHeight - 2 * borderWidth) / 8;
 
     blockBrown = blockBrownOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);     //  scale all pixel buffers to the calculated block size
     blockWhite = blockWhiteOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);

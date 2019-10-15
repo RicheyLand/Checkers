@@ -33,6 +33,7 @@ private:
     deque<Coordinates> stonesToRemove;                          //  list of stones that are going to be removed after jump
 
     static const int blockCount = 8;                            //  number of game board blocks in one column
+    int headerBarHeight;
     int borderWidth;                                            //  window border width value
     int blockWidth;                                             //  game board block width value
     int width;                                                  //  width value of the window
