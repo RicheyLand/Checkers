@@ -2268,7 +2268,40 @@ void Checkers::onRestartButtonClicked()
 
 void Checkers::onSaveButtonClicked()
 {
-    cout << "onSaveButtonClicked" << endl;
+    ofstream fout;
+    fout.open("checkers.conf", ios::out);
+
+    if (fout)
+    {
+        fout << whitePlaying << endl;
+
+        for (int i = 0; i < blockCount; i++)                        //  iterate through all game board blocks
+        {
+            for (int j = 0; j < blockCount; j++)
+            {
+                if (whites[i][j])                                           //  white stone have to be on this cell
+                {
+                    if (queens[i][j])                                       //  queen
+                        fout << "W";
+                    else                                                    //  stone
+                        fout << "w";
+                }
+                else if (blacks[i][j])                                      //  black stone have to be on this cell
+                {
+                    if (queens[i][j])                                       //  queen
+                        fout << "B";
+                    else                                                    //  stone
+                        fout << "b";
+                }
+                else                                                        //  this cell have to be empty
+                    fout << " ";
+            }
+
+            fout << endl;
+        }
+
+        fout.close();
+    }
 }
 
 void Checkers::onLoadButtonClicked()

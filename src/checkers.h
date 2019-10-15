@@ -3,6 +3,7 @@
 
 #include <gtkmm.h>
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 class Coordinates                                               //  class which represents matrix coordinates
