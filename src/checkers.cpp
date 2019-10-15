@@ -10,8 +10,10 @@ Checkers::Checkers()
     height = height + 2 * borderWidth;
 
     headerBar.set_title("Checkers");
+    headerBar.set_subtitle("Cross-platform board game");
     headerBar.set_has_subtitle(false);
-    headerBar.set_size_request(-1, 42);
+    headerBar.set_size_request(-1, 50);
+    headerBar.set_show_close_button(true);
 
     set_title("Checkers");                                      //  set appropriate attributes of the window object
     set_default_size(width, height);
@@ -2196,6 +2198,8 @@ bool Checkers::onEventboxButtonPress(GdkEventButton * /*button_event*/, Glib::us
 
 bool Checkers::onConfigureChanged(GdkEventConfigure * event)
 {
+    cout << headerBar.get_allocated_height() << endl;
+
     int newWidth = event->width;                                //  get current dimensions of the window
     int newHeight = event->height;
 
