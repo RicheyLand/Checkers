@@ -16,16 +16,16 @@ Checkers::Checkers()
 
     restartButton.set_image_from_icon_name("view-refresh");
     restartButton.set_tooltip_text("Start new game");
-    restartButton.set_size_request(45, 45);
+    restartButton.set_size_request(40, 40);
     saveButton.set_image_from_icon_name("document-save");
     saveButton.set_tooltip_text("Save game progress");
-    saveButton.set_size_request(45, 45);
+    saveButton.set_size_request(40, 40);
     loadButton.set_image_from_icon_name("document-open");
     loadButton.set_tooltip_text("Load saved game");
-    loadButton.set_size_request(45, 45);
+    loadButton.set_size_request(40, 40);
     fullscreenButton.set_image_from_icon_name("view-fullscreen");
     fullscreenButton.set_tooltip_text("Toggle fullscreen mode");
-    fullscreenButton.set_size_request(45, 45);
+    fullscreenButton.set_size_request(40, 40);
     headerBar.set_title("Checkers");
     headerBar.set_has_subtitle(false);
     headerBar.set_size_request(-1, headerBarHeight);
@@ -46,6 +46,11 @@ Checkers::Checkers()
     add(scrolledWindow);                                        //  set scrolled window as main widget of the window
 
     add_events(Gdk::STRUCTURE_MASK);
+    signal_key_press_event().connect(sigc::mem_fun(*this, &Checkers::onKeyPress));
+    restartButton.signal_clicked().connect(sigc::mem_fun(*this,&Checkers::onRestartButtonClicked));
+    saveButton.signal_clicked().connect(sigc::mem_fun(*this,&Checkers::onSaveButtonClicked));
+    loadButton.signal_clicked().connect(sigc::mem_fun(*this,&Checkers::onLoadButtonClicked));
+    fullscreenButton.signal_clicked().connect(sigc::mem_fun(*this,&Checkers::onFullscreenButtonClicked));
     signal_configure_event().connect(sigc::mem_fun(*this, &Checkers::onConfigureChanged), false);
                                                                 //  load appropriate images into the pixel buffer objects
     blockBrownOriginal = Gdk::Pixbuf::create_from_file("./resources/block_brown.jpg");
@@ -2215,8 +2220,61 @@ bool Checkers::onEventboxButtonPress(GdkEventButton * /*button_event*/, Glib::us
 
     clickReaction(y, x);                                        //  handle click using appropriate method
 
-    // hide();
     return true;
+}
+
+bool Checkers::onKeyPress(GdkEventKey * event)
+{
+    if (event->type == GDK_KEY_PRESS && event->keyval == GDK_KEY_F11)
+    {
+        if (fullscreenFlag)
+            unfullscreen();
+        else
+            fullscreen();
+
+        fullscreenFlag = !fullscreenFlag;
+
+        return true;
+    }
+
+    if (event->type == GDK_KEY_PRESS && event->keyval == GDK_KEY_Escape)
+    {
+        unset_application();
+        return true;
+    }
+
+    // if (event->type == GDK_KEY_PRESS && event->keyval == GDK_KEY_1 && (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)) == GDK_MOD1_MASK)
+    // {
+    //     cout << "Alt + 1" << endl;
+    //     return true;
+    // }
+
+    return false;
+}
+
+void Checkers::onRestartButtonClicked()
+{
+    cout << "onRestartButtonClicked" << endl;
+}
+
+void Checkers::onSaveButtonClicked()
+{
+    cout << "onSaveButtonClicked" << endl;
+}
+
+void Checkers::onLoadButtonClicked()
+{
+    cout << "onLoadButtonClicked" << endl;
+}
+
+void Checkers::onFullscreenButtonClicked()
+{
+    if (fullscreenFlag)
+        unfullscreen();
+    else
+        fullscreen();
+
+    fullscreenFlag = !fullscreenFlag;
 }
 
 bool Checkers::onConfigureChanged(GdkEventConfigure * event)

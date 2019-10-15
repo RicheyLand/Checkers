@@ -38,6 +38,7 @@ private:
     int blockWidth;                                             //  game board block width value
     int width;                                                  //  width value of the window
     int height;                                                 //  height value of the window
+    bool fullscreenFlag = false;
 
     Gtk::HeaderBar headerBar;
     Gtk::Button restartButton;
@@ -83,6 +84,11 @@ private:
     bool isGameOver();                                          //  calculates if the game is finally over
     void clickReaction(int, int);                               //  implements reaction to the game board click
 
+    bool onKeyPress(GdkEventKey *);
+    void onRestartButtonClicked();
+    void onSaveButtonClicked();
+    void onLoadButtonClicked();
+    void onFullscreenButtonClicked();
     bool onEventboxButtonPress(GdkEventButton *, Glib::ustring);    //  event box click implementation
     bool onConfigureChanged(GdkEventConfigure *);               //  window resize is handled by this method
 };
