@@ -36,7 +36,6 @@ private:
     static const int blockCount = 8;                            //  number of game board blocks in one column
     int headerBarHeight;
     int borderWidth;                                            //  window border width value
-    int blockWidth;                                             //  game board block width value
     int width;                                                  //  width value of the window
     int height;                                                 //  height value of the window
     bool fullscreenFlag = false;

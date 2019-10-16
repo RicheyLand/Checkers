@@ -6,7 +6,6 @@ Checkers::Checkers()
     borderWidth = 0;                                            //  setup default window dimensions and border size
     width = 920;
     height = 920;
-    blockWidth = width / 8;
     width = width + 2 * borderWidth;
     height = height + 2 * borderWidth;
     height += headerBarHeight;
@@ -2273,7 +2272,7 @@ void Checkers::onSaveButtonClicked()
 
     if (fout)
     {
-        fout << whitePlaying << endl;
+        fout << whitePlaying << onlyJumping << turnStarted << endl;
 
         for (int i = 0; i < blockCount; i++)                        //  iterate through all game board blocks
         {
@@ -2306,7 +2305,101 @@ void Checkers::onSaveButtonClicked()
 
 void Checkers::onLoadButtonClicked()
 {
-    cout << "onLoadButtonClicked" << endl;
+    ifstream fin;
+    fin.open("checkers.conf", ios::in);
+
+    if (fin)
+    {
+        bool success = true;
+        string player = "";
+        getline(fin, player);
+
+        string line;
+        string state[8];
+
+        for (int i = 0; i < 8; i++)
+        {
+            line = "";
+            getline(fin, line);
+
+            if (line.size() == 8)
+                state[i] = line;
+            else
+            {
+                success = false;
+                break;
+            }
+        }
+
+        if (player.size() == 3 && success)
+        {
+            if (player[0] == '1')
+            {
+                whitePlaying = true;
+                headerBar.set_subtitle("The white player's turn");
+            }
+            else
+            {
+                whitePlaying = false;
+                headerBar.set_subtitle("The black player's turn");
+            }
+
+            if (player[1] == '1')
+                onlyJumping = 1;
+            else if (player[1] == '2')
+                onlyJumping = 2;
+            else
+                onlyJumping = 0;
+
+            if (player[2] == '1')
+                turnStarted = true;
+            else
+                turnStarted = false;
+
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    whites[i][j] = blacks[i][j] = queens[i][j] = false;     //  clear all description arrays
+
+                    if (state[i][j] == 'w')
+                        whites[i][j] = true;
+                    else if (state[i][j] == 'b')
+                        blacks[i][j] = true;
+                    else if (state[i][j] == 'W')
+                    {
+                        whites[i][j] = true;
+                        queens[i][j] = true;
+                    }
+                    else if (state[i][j] == 'B')
+                    {
+                        blacks[i][j] = true;
+                        queens[i][j] = true;
+                    }
+                }
+            }
+        }
+
+        fin.close();
+    }
+
+    /*
+        LOADING GAME COULD CAUSE PROBLEM WHEN GAME HAS BEEN SAVED DURING UNFINISHED MULTIPLE JUMP
+        MULTIPLE JUMP LOAD MUST BE TESTED AND FIXED WHEN PROBLEM WILL OCCUR
+    */
+
+    selected = false;                                           //  no cell is selected
+
+    moveHint.clear();
+    stonesToRemove.clear();
+
+    gameOver = false;
+
+    for (int i = 0; i < blockCount; i++)                        //  iterate through all game board blocks
+    {
+        for (int j = 0; j < blockCount; j++)
+            resetBoardColor(i, j);                              //  use appropriate image for current position
+    }
 }
 
 void Checkers::onFullscreenButtonClicked()
