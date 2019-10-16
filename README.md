@@ -5,6 +5,14 @@ The repository also includes a Qt 5 version.
 
 ![Screenshot](docs/images/screenshot.png)
 
+## Features
+
+* Comfortable gameplay for two players.
+* Full implementation of checkers rules.
+* Highlighting of possible movements.
+* Saving and loading of game progress.
+* Automatic resizing of the game board.
+
 ## Build instructions
 
 * Clone the Checkers game repository.
