@@ -10,9 +10,6 @@ Checkers::Checkers()
     height = height + 2 * borderWidth;
     height += headerBarHeight;
 
-    width += 16;
-    height += 16;
-
     restartButton.set_image_from_icon_name("view-refresh");
     restartButton.set_tooltip_text("Start new game");
     restartButton.set_size_request(40, 40);
@@ -2437,9 +2434,11 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)
     int chunk;
 
     if (width < height - headerBarHeight)
-        chunk = (width - 16 - 2 * borderWidth) / 8;
+        chunk = (width - 2 * borderWidth) / 8;
     else
-        chunk = (height - 16 - headerBarHeight - 2 * borderWidth) / 8;
+        chunk = (height - headerBarHeight - 2 * borderWidth) / 8;
+
+    chunk -= 7;
 
     blockBrown = blockBrownOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);     //  scale all pixel buffers to the calculated block size
     blockWhite = blockWhiteOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
