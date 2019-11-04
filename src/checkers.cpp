@@ -2304,19 +2304,19 @@ void Checkers::onLoadButtonClicked()                            //  handles clic
 
     if (fin)                                                    //  check if configuration file has been successfully opened
     {
-        bool success = true;
+        bool success = true;                                    //  holds if configuration has been loaded successfully
         string player = "";
         getline(fin, player);
 
         string line;
         string state[8];
 
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 8; i++)                             //  load game board state by reading eight lines from configuration file
         {
             line = "";
             getline(fin, line);
 
-            if (line.size() == 8)
+            if (line.size() == 8)                               //  check if length of the loaded line is valid
                 state[i] = line;
             else
             {
@@ -2325,47 +2325,47 @@ void Checkers::onLoadButtonClicked()                            //  handles clic
             }
         }
 
-        if (player.size() == 3 && success)
+        if (player.size() == 3 && success)                      //  check if configuration has been loaded successfully
         {
-            if (player[0] == '1')
+            if (player[0] == '1')                               //  check value of loaded flag
             {
                 whitePlaying = true;
-                headerBar.set_subtitle("The white player's turn");
+                headerBar.set_subtitle("The white player's turn");      //  update header bar subtitle
             }
             else
             {
                 whitePlaying = false;
-                headerBar.set_subtitle("The black player's turn");
+                headerBar.set_subtitle("The black player's turn");      //  update header bar subtitle
             }
 
-            if (player[1] == '1')
+            if (player[1] == '1')                               //  check value of loaded flag
                 onlyJumping = 1;
-            else if (player[1] == '2')
+            else if (player[1] == '2')                          //  check value of loaded flag
                 onlyJumping = 2;
             else
                 onlyJumping = 0;
 
-            if (player[2] == '1')
+            if (player[2] == '1')                               //  check value of loaded flag
                 turnStarted = true;
             else
                 turnStarted = false;
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 8; i++)                         //  update all game board state values
             {
                 for (int j = 0; j < 8; j++)
                 {
                     whites[i][j] = blacks[i][j] = queens[i][j] = false;     //  clear all description arrays
-
-                    if (state[i][j] == 'w')
+                                                                //  update array with values loaded from configuration file
+                    if (state[i][j] == 'w')                     //  white stone
                         whites[i][j] = true;
-                    else if (state[i][j] == 'b')
+                    else if (state[i][j] == 'b')                //  black stone
                         blacks[i][j] = true;
-                    else if (state[i][j] == 'W')
+                    else if (state[i][j] == 'W')                //  white queen
                     {
                         whites[i][j] = true;
                         queens[i][j] = true;
                     }
-                    else if (state[i][j] == 'B')
+                    else if (state[i][j] == 'B')                //  black queen
                     {
                         blacks[i][j] = true;
                         queens[i][j] = true;
@@ -2373,17 +2373,17 @@ void Checkers::onLoadButtonClicked()                            //  handles clic
                 }
             }
 
-            selected = false;                                           //  no cell is selected
+            selected = false;                                   //  no cell is selected
 
             moveHint.clear();
             stonesToRemove.clear();
 
-            gameOver = false;
+            gameOver = false;                                   //  reset game over flag
 
-            for (int i = 0; i < blockCount; i++)                        //  iterate through all game board blocks
+            for (int i = 0; i < blockCount; i++)                //  iterate through all game board blocks
             {
                 for (int j = 0; j < blockCount; j++)
-                    resetBoardColor(i, j);                              //  use appropriate image for current position
+                    resetBoardColor(i, j);                      //  use appropriate image for current position
             }
         }
 
@@ -2393,7 +2393,7 @@ void Checkers::onLoadButtonClicked()                            //  handles clic
 
 void Checkers::onFullscreenButtonClicked()                      //  handles click on the fullscreen button
 {
-    if (fullscreenFlag)
+    if (fullscreenFlag)                                         //  toggle fullscreen mode by the flag value
         unfullscreen();
     else
         fullscreen();
@@ -2426,11 +2426,11 @@ bool Checkers::onConfigureChanged(GdkEventConfigure * event)    //  window resiz
     int chunk;
 
     if (width < height - headerBarHeight)
-        chunk = (width - 2 * borderWidth) / 8;
+        chunk = (width - 2 * borderWidth) / 8;                  //  calculate size of single image
     else
-        chunk = (height - headerBarHeight - 2 * borderWidth) / 8;
+        chunk = (height - headerBarHeight - 2 * borderWidth) / 8;   //  calculate size of single image
 
-    chunk -= 7;
+    chunk -= 7;                                                 //  use desired margin around game board images
 
     blockBrown = blockBrownOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);     //  scale all pixel buffers to the calculated block size
     blockWhite = blockWhiteOriginal->scale_simple(chunk, chunk, Gdk::INTERP_BILINEAR);
