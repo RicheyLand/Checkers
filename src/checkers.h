@@ -40,11 +40,11 @@ private:
     int height;                                                 //  height value of the window
     bool fullscreenFlag = false;
 
-    Gtk::HeaderBar headerBar;
-    Gtk::Button restartButton;
-    Gtk::Button saveButton;
-    Gtk::Button loadButton;
-    Gtk::Button fullscreenButton;
+    Gtk::HeaderBar headerBar;                                   //  custom header bar which will replace default window top bar
+    Gtk::Button restartButton;                                  //  header bar button which allows starting new game
+    Gtk::Button saveButton;                                     //  header bar button which allows saving current game progress
+    Gtk::Button loadButton;                                     //  header bar button which allows loading previously saved game progress
+    Gtk::Button fullscreenButton;                               //  header bar button which activates fullscreen mode
     
     Gtk::ScrolledWindow scrolledWindow;                         //  scrolled window wrapper
     Gtk::Grid myGrid;                                           //  grid which holds all the game board blocks
@@ -84,12 +84,12 @@ private:
     bool isGameOver();                                          //  calculates if the game is finally over
     void clickReaction(int, int);                               //  implements reaction to the game board click
 
-    bool onKeyPress(GdkEventKey *);
-    void onRestartButtonClicked();
-    void onSaveButtonClicked();
-    void onLoadButtonClicked();
-    void onFullscreenButtonClicked();
-    bool onEventboxButtonPress(GdkEventButton *, Glib::ustring);    //  event box click implementation
+    bool onKeyPress(GdkEventKey *);                             //  allows catching keyboard press event
+    void onRestartButtonClicked();                              //  handles click on the restart button
+    void onSaveButtonClicked();                                 //  handles click on the save button
+    void onLoadButtonClicked();                                 //  handles click on the load button
+    void onFullscreenButtonClicked();                           //  handles click on the fullscreen button
+    bool onEventboxButtonPress(GdkEventButton *, Glib::ustring);    //  handles event box mouse click
     bool onConfigureChanged(GdkEventConfigure *);               //  window resize is handled by this method
 };
 

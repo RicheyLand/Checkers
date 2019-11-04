@@ -4,34 +4,34 @@ Checkers::Checkers()
 {
     headerBarHeight = 50;
     borderWidth = 0;                                            //  setup default window dimensions and border size
-    width = 920;
+    width = 920;                                                //  set default dimensions of the application window
     height = 920;
-    width = width + 2 * borderWidth;
+    width = width + 2 * borderWidth;                            //  window border size must included in final window size
     height = height + 2 * borderWidth;
-    height += headerBarHeight;
+    height += headerBarHeight;                                  //  custom header height must be included in final window size
 
-    restartButton.set_image_from_icon_name("view-refresh");
+    restartButton.set_image_from_icon_name("view-refresh");     //  set default size and icon of the restart button
     restartButton.set_tooltip_text("Start new game");
     restartButton.set_size_request(40, 40);
-    saveButton.set_image_from_icon_name("document-save");
+    saveButton.set_image_from_icon_name("document-save");       //  set default size and icon of the save button
     saveButton.set_tooltip_text("Save game progress");
     saveButton.set_size_request(40, 40);
-    loadButton.set_image_from_icon_name("document-open");
+    loadButton.set_image_from_icon_name("document-open");       //  set default size and icon of the load button
     loadButton.set_tooltip_text("Load saved game");
     loadButton.set_size_request(40, 40);
-    fullscreenButton.set_image_from_icon_name("view-fullscreen");
+    fullscreenButton.set_image_from_icon_name("view-fullscreen");   //  set default size and icon of the fullscreen button
     fullscreenButton.set_tooltip_text("Toggle fullscreen mode");
     fullscreenButton.set_size_request(40, 40);
     headerBar.set_title("Checkers");
     headerBar.set_has_subtitle(false);
-    headerBar.set_size_request(-1, headerBarHeight);
-    headerBar.set_show_close_button(true);
-    headerBar.pack_start(fullscreenButton);
+    headerBar.set_size_request(-1, headerBarHeight);            //  set fixed size of the header bar
+    headerBar.set_show_close_button(true);                      //  enable default control buttons in the header bar
+    headerBar.pack_start(fullscreenButton);                     //  push all button into the header bar
     headerBar.pack_end(restartButton);
     headerBar.pack_end(saveButton);
     headerBar.pack_end(loadButton);
     headerBar.unset_decoration_layout();
-    set_titlebar(headerBar);
+    set_titlebar(headerBar);                                    //  activate custom header bar
 
     set_title("Checkers");                                      //  set appropriate attributes of the window object
     set_default_size(width, height);
@@ -42,12 +42,12 @@ Checkers::Checkers()
     add(scrolledWindow);                                        //  set scrolled window as main widget of the window
 
     add_events(Gdk::STRUCTURE_MASK);
-    signal_key_press_event().connect(sigc::mem_fun(*this, &Checkers::onKeyPress));
-    restartButton.signal_clicked().connect(sigc::mem_fun(*this,&Checkers::onRestartButtonClicked));
+    signal_key_press_event().connect(sigc::mem_fun(*this, &Checkers::onKeyPress));      //  connect keyboard press event
+    restartButton.signal_clicked().connect(sigc::mem_fun(*this,&Checkers::onRestartButtonClicked));     //  connect click events of all header bar button
     saveButton.signal_clicked().connect(sigc::mem_fun(*this,&Checkers::onSaveButtonClicked));
     loadButton.signal_clicked().connect(sigc::mem_fun(*this,&Checkers::onLoadButtonClicked));
     fullscreenButton.signal_clicked().connect(sigc::mem_fun(*this,&Checkers::onFullscreenButtonClicked));
-    signal_configure_event().connect(sigc::mem_fun(*this, &Checkers::onConfigureChanged), false);
+    signal_configure_event().connect(sigc::mem_fun(*this, &Checkers::onConfigureChanged), false);   //  connect window resize event
                                                                 //  load appropriate images into the pixel buffer objects
     blockBrownOriginal = Gdk::Pixbuf::create_from_file("./resources/block_brown.jpg");
     blockWhiteOriginal = Gdk::Pixbuf::create_from_file("./resources/block_white.jpg");
@@ -93,9 +93,9 @@ Checkers::Checkers()
         }
     }
 
-    myGrid.set_halign(Gtk::ALIGN_CENTER);
+    myGrid.set_halign(Gtk::ALIGN_CENTER);                       //  set alignment values of images in the grid
     myGrid.set_valign(Gtk::ALIGN_CENTER);
-    scrolledWindow.set_min_content_width(480);
+    scrolledWindow.set_min_content_width(480);                  //  force minimum size of the window
     scrolledWindow.set_min_content_height(480);
     scrolledWindow.add(myGrid);                                 //  add grid into the scrolled window to allow window shrink
 
@@ -106,7 +106,7 @@ Checkers::~Checkers()
 {
 }
 
-void Checkers::initArrays()
+void Checkers::initArrays()                                     //  initialize game board data to the default state
 {
     selected = false;                                           //  no cell is selected
     whitePlaying = true;                                        //  first player is on turn at start of game
@@ -152,7 +152,7 @@ void Checkers::initArrays()
     gameOver = false;                                           //  game is not over by default
 }
 
-void Checkers::resetBoardColor(int & x, int & y)
+void Checkers::resetBoardColor(int & x, int & y)                //  update image of desired board block
 {
     if (whites[y][x])                                           //  white stone have to be on this cell
     {
@@ -187,7 +187,7 @@ void Checkers::resetBoardColor(int & x, int & y)
     }
 }
 
-void Checkers::jumpPredicate()
+void Checkers::jumpPredicate()                                  //  calculates possible range of stone jumping
 {
     onlyJumping = 0;                                            //  set default jumping flag value
 
@@ -439,7 +439,7 @@ void Checkers::jumpPredicate()
     }
 }
 
-bool Checkers::isGameOver()
+bool Checkers::isGameOver()                                     //  calculates if the game is finally over
 {
     if (onlyJumping == 0)                                       //  jump predicate is not active
     {
@@ -527,7 +527,7 @@ bool Checkers::isGameOver()
     return false;
 }
 
-void Checkers::clickReaction(int y, int x)
+void Checkers::clickReaction(int y, int x)                      //  implements reaction to the game board click
 {
     if (whitePlaying)                                           //  white player is on turn
     {
@@ -2156,7 +2156,7 @@ void Checkers::clickReaction(int y, int x)
     }
 }
 
-bool Checkers::onEventboxButtonPress(GdkEventButton * /*button_event*/, Glib::ustring data)
+bool Checkers::onEventboxButtonPress(GdkEventButton * /*button_event*/, Glib::ustring data)     //  handles event box mouse click
 {
     int x;                                                      //  coordinates of selected block
     int y;
@@ -2222,11 +2222,11 @@ bool Checkers::onEventboxButtonPress(GdkEventButton * /*button_event*/, Glib::us
     return true;
 }
 
-bool Checkers::onKeyPress(GdkEventKey * event)
+bool Checkers::onKeyPress(GdkEventKey * event)                  //  allows catching keyboard press event
 {
-    if (event->type == GDK_KEY_PRESS && event->keyval == GDK_KEY_F11)
+    if (event->type == GDK_KEY_PRESS && event->keyval == GDK_KEY_F11)   //  check if pressed key was F11 key
     {
-        if (fullscreenFlag)
+        if (fullscreenFlag)                                     //  toggle fullscreen mode by the flag value
             unfullscreen();
         else
             fullscreen();
@@ -2236,24 +2236,21 @@ bool Checkers::onKeyPress(GdkEventKey * event)
         return true;
     }
 
-    if (event->type == GDK_KEY_PRESS && event->keyval == GDK_KEY_Escape)
+    if (event->type == GDK_KEY_PRESS && event->keyval == GDK_KEY_Escape)    //  check if pressed key was escape key
     {
-        unset_application();
+        unset_application();                                    //  quit application immediately
         return true;
     }
 
     // if (event->type == GDK_KEY_PRESS && event->keyval == GDK_KEY_1 && (event->state & (GDK_SHIFT_MASK | GDK_CONTROL_MASK | GDK_MOD1_MASK)) == GDK_MOD1_MASK)
-    // {
-    //     cout << "Alt + 1" << endl;
     //     return true;
-    // }
 
     return false;
 }
 
-void Checkers::onRestartButtonClicked()
+void Checkers::onRestartButtonClicked()                         //  handles click on the restart button
 {
-    initArrays();
+    initArrays();                                               //  reset game to its default state
 
     for (int i = 0; i < blockCount; i++)                        //  iterate through all game board blocks
     {
@@ -2262,34 +2259,34 @@ void Checkers::onRestartButtonClicked()
     }
 }
 
-void Checkers::onSaveButtonClicked()
+void Checkers::onSaveButtonClicked()                            //  handles click on the save button
 {
     ofstream fout;
-    fout.open("checkers.conf", ios::out);
+    fout.open("checkers.conf", ios::out);                       //  open configuration file for writing
 
     if (fout)
     {
-        fout << whitePlaying << onlyJumping << turnStarted << endl;
+        fout << whitePlaying << onlyJumping << turnStarted << endl;     //  write information about current turn into the configuration file
 
-        for (int i = 0; i < blockCount; i++)                        //  iterate through all game board blocks
+        for (int i = 0; i < blockCount; i++)                    //  iterate through all game board blocks
         {
             for (int j = 0; j < blockCount; j++)
             {
-                if (whites[i][j])                                           //  white stone have to be on this cell
+                if (whites[i][j])                               //  white stone have to be on this cell
                 {
-                    if (queens[i][j])                                       //  queen
+                    if (queens[i][j])                           //  queen
                         fout << "W";
-                    else                                                    //  stone
+                    else                                        //  stone
                         fout << "w";
                 }
-                else if (blacks[i][j])                                      //  black stone have to be on this cell
+                else if (blacks[i][j])                          //  black stone have to be on this cell
                 {
-                    if (queens[i][j])                                       //  queen
+                    if (queens[i][j])                           //  queen
                         fout << "B";
-                    else                                                    //  stone
+                    else                                        //  stone
                         fout << "b";
                 }
-                else                                                        //  this cell have to be empty
+                else                                            //  this cell have to be empty
                     fout << " ";
             }
 
@@ -2300,12 +2297,12 @@ void Checkers::onSaveButtonClicked()
     }
 }
 
-void Checkers::onLoadButtonClicked()
+void Checkers::onLoadButtonClicked()                            //  handles click on the load button
 {
     ifstream fin;
-    fin.open("checkers.conf", ios::in);
+    fin.open("checkers.conf", ios::in);                         //  open configuration file for reading
 
-    if (fin)
+    if (fin)                                                    //  check if configuration file has been successfully opened
     {
         bool success = true;
         string player = "";
@@ -2375,31 +2372,26 @@ void Checkers::onLoadButtonClicked()
                     }
                 }
             }
+
+            selected = false;                                           //  no cell is selected
+
+            moveHint.clear();
+            stonesToRemove.clear();
+
+            gameOver = false;
+
+            for (int i = 0; i < blockCount; i++)                        //  iterate through all game board blocks
+            {
+                for (int j = 0; j < blockCount; j++)
+                    resetBoardColor(i, j);                              //  use appropriate image for current position
+            }
         }
 
         fin.close();
     }
-
-    /*
-        LOADING GAME COULD CAUSE PROBLEM WHEN GAME HAS BEEN SAVED DURING UNFINISHED MULTIPLE JUMP
-        MULTIPLE JUMP LOAD MUST BE TESTED AND FIXED WHEN PROBLEM WILL OCCUR
-    */
-
-    selected = false;                                           //  no cell is selected
-
-    moveHint.clear();
-    stonesToRemove.clear();
-
-    gameOver = false;
-
-    for (int i = 0; i < blockCount; i++)                        //  iterate through all game board blocks
-    {
-        for (int j = 0; j < blockCount; j++)
-            resetBoardColor(i, j);                              //  use appropriate image for current position
-    }
 }
 
-void Checkers::onFullscreenButtonClicked()
+void Checkers::onFullscreenButtonClicked()                      //  handles click on the fullscreen button
 {
     if (fullscreenFlag)
         unfullscreen();
@@ -2409,7 +2401,7 @@ void Checkers::onFullscreenButtonClicked()
     fullscreenFlag = !fullscreenFlag;
 }
 
-bool Checkers::onConfigureChanged(GdkEventConfigure * event)
+bool Checkers::onConfigureChanged(GdkEventConfigure * event)    //  window resize is handled by this method
 {
     int newWidth = event->width;                                //  get current dimensions of the window
     int newHeight = event->height;
